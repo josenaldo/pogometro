@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pogômetro
 
-## Getting Started
+**A Certificação Oficial de Gambiarra** — analise um repositório GitHub e descubra quantos Princípios, Técnicas e Gambi Design Patterns do livro [Programação Orientada a Gambiarra](https://livropog.com.br) o seu projeto conquistou. Quanto mais gambiarra, maior a lenda!
 
-First, run the development server:
+---
+
+## Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **UI**: Tailwind CSS v4
+- **IA**: Google Gemini 2.0 Flash (via REST, sem SDK)
+- **Storage**: Upstash Redis (via REST, sem SDK)
+- **GitHub data**: GitHub REST API
+- **Deploy**: Vercel (free tier)
+
+---
+
+## Setup rápido
 
 ```bash
+# 1. Clone e instale
+git clone https://github.com/josenaldo/pogometro.git
+cd pogometro
+npm install
+
+# 2. Configure as chaves
+cp .env.example .env.local
+# edite .env.local com suas chaves (ver tabela abaixo)
+
+# 3. Rode
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Variáveis de ambiente
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+| Variável | Como obter | Obrigatória |
+|---|---|---|
+| `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/app/apikey) — Free: 1.500 req/dia | ✅ |
+| `UPSTASH_REDIS_REST_URL` | [Upstash Console](https://console.upstash.com) — Free: 10k ops/dia | ✅ |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Console (mesmo banco) | ✅ |
+| `GITHUB_TOKEN` | [GitHub Tokens](https://github.com/settings/tokens) — aumenta limite de 60 para 5.000 req/hora | Recomendado |
+| `NEXT_PUBLIC_SITE_URL` | URL pública sem barra final | Em produção |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Escala de Mjolnir
 
-To learn more about Next.js, take a look at the following resources:
+| Pontos | Martelo | Título |
+|---|---|---|
+| 0–5 | 🔨 | Martelinho de Bebê |
+| 6–15 | 🪚 | Martelo de Carpinteiro |
+| 16–30 | ⚒️ | Marreta do Pedreiro |
+| 31–45 | ⚡ | Mjolnir |
+| 46+ | 🪓 | Rompe Tormentas |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Baseado no livro **Programação Orientada a Gambiarra** — [livropog.com.br](https://livropog.com.br)

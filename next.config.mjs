@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-};
+  // Não usar output: 'export' — precisamos de API routes e SSR
+  experimental: {
+    // Nada experimental por enquanto
+  },
+}
 
-export default nextConfig;
+export default nextConfig
