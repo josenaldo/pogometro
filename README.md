@@ -33,25 +33,25 @@ npm run dev
 
 ### Variáveis de ambiente
 
-| Variável | Como obter | Obrigatória |
-|---|---|---|
-| `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/app/apikey) — Free: 1.500 req/dia | ✅ |
-| `UPSTASH_REDIS_REST_URL` | [Upstash Console](https://console.upstash.com) — Free: 10k ops/dia | ✅ |
-| `UPSTASH_REDIS_REST_TOKEN` | Upstash Console (mesmo banco) | ✅ |
-| `GITHUB_TOKEN` | [GitHub Tokens](https://github.com/settings/tokens) — aumenta limite de 60 para 5.000 req/hora | Recomendado |
-| `NEXT_PUBLIC_SITE_URL` | URL pública sem barra final | Em produção |
+| Variável                   | Como obter                                                                                     | Obrigatória |
+| -------------------------- | ---------------------------------------------------------------------------------------------- | ----------- |
+| `GEMINI_API_KEY`           | [Google AI Studio](https://aistudio.google.com/app/apikey) — Free: 1.500 req/dia               | ✅           |
+| `UPSTASH_REDIS_REST_URL`   | [Upstash Console](https://console.upstash.com) — Free: 10k ops/dia                             | ✅           |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Console (mesmo banco)                                                                  | ✅           |
+| `GITHUB_TOKEN`             | [GitHub Tokens](https://github.com/settings/tokens) — aumenta limite de 60 para 5.000 req/hora | Recomendado |
+| `NEXT_PUBLIC_SITE_URL`     | URL pública sem barra final                                                                    | Em produção |
 
 ---
 
-## Escala de Mjolnir
+## Escala de Marretamento
 
-| Pontos | Martelo | Título |
-|---|---|---|
-| 0–5 | 🔨 | Martelinho de Bebê |
-| 6–15 | 🪚 | Martelo de Carpinteiro |
-| 16–30 | ⚒️ | Marreta do Pedreiro |
-| 31–45 | ⚡ | Mjolnir |
-| 46+ | 🪓 | Rompe Tormentas |
+| Pontos | Martelo | Título                 |
+| ------ | ------- | ---------------------- |
+| 0–5    | 🔨       | Martelinho de Bebê     |
+| 6–15   | 🪚       | Martelo de Carpinteiro |
+| 16–30  | ⚒️       | Marreta do Pedreiro    |
+| 31–45  | ⚡       | Mjolnir                |
+| 46+    | 🪓       | Rompe Tormentas        |
 
 ---
 
