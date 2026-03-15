@@ -75,15 +75,38 @@ const BaseTheme = {
         },
         MuiPaper: {
             styleOverrides: {
-                root: {
+                root: ({ theme, ownerState }) => ({
                     backgroundImage: 'none',
-                },
+                    borderRadius: theme.shape.borderRadius * 1.25,
+                    ...(ownerState.variant === 'outlined'
+                        ? {
+                            borderColor: alpha(theme.palette.text.primary, 0.08),
+                            backgroundColor: alpha(
+                                theme.palette.background.paper,
+                                theme.palette.mode === 'dark' ? 0.94 : 0.98
+                            ),
+                        }
+                        : {}),
+                }),
             },
         },
         MuiCard: {
             styleOverrides: {
-                root: {
+                root: ({ theme }) => ({
                     backgroundImage: 'none',
+                    borderRadius: theme.shape.borderRadius * 1.5,
+                    borderColor: alpha(theme.palette.text.primary, 0.08),
+                    backgroundColor: alpha(
+                        theme.palette.background.paper,
+                        theme.palette.mode === 'dark' ? 0.96 : 0.99
+                    ),
+                }),
+            },
+        },
+        MuiCardActionArea: {
+            styleOverrides: {
+                root: {
+                    borderRadius: 'inherit',
                 },
             },
         },
@@ -93,10 +116,23 @@ const BaseTheme = {
             },
             styleOverrides: {
                 root: ({ theme }) => ({
-                    borderRadius: theme.shape.borderRadius,
-                    paddingInline: theme.spacing(2.5),
+                    borderRadius: 999,
+                    minHeight: 44,
+                    paddingInline: theme.spacing(2.75),
                     paddingBlock: theme.spacing(1.25),
                     fontWeight: 700,
+                }),
+                contained: ({ theme }) => ({
+                    boxShadow: `0 10px 24px ${alpha(
+                        theme.palette.common.black,
+                        theme.palette.mode === 'dark' ? 0.28 : 0.12
+                    )}`,
+                    '&:hover': {
+                        boxShadow: `0 14px 28px ${alpha(
+                            theme.palette.common.black,
+                            theme.palette.mode === 'dark' ? 0.34 : 0.16
+                        )}`,
+                    },
                 }),
                 outlined: ({ theme }) => ({
                     borderColor: alpha(theme.palette.text.primary, 0.12),
@@ -111,6 +147,13 @@ const BaseTheme = {
             styleOverrides: {
                 root: ({ theme }) => ({
                     border: `1px solid ${alpha(theme.palette.text.primary, 0.08)}`,
+                    backgroundColor: alpha(
+                        theme.palette.background.paper,
+                        theme.palette.mode === 'dark' ? 0.78 : 0.92
+                    ),
+                    '&:hover': {
+                        backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                    },
                 }),
             },
         },
@@ -118,7 +161,7 @@ const BaseTheme = {
             styleOverrides: {
                 root: ({ theme }) => ({
                     fontWeight: 700,
-                    borderRadius: theme.shape.borderRadius * 2.5,
+                    borderRadius: 999,
                 }),
             },
         },
@@ -130,6 +173,9 @@ const BaseTheme = {
                     '& .MuiOutlinedInput-notchedOutline': {
                         borderColor: alpha(theme.palette.text.primary, 0.12),
                     },
+                    '& .MuiOutlinedInput-input': {
+                        paddingBlock: theme.spacing(1.8),
+                    },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
                         borderColor: alpha(theme.palette.primary.main, 0.42),
                     },
@@ -138,6 +184,39 @@ const BaseTheme = {
                         borderColor: theme.palette.primary.main,
                     },
                 }),
+            },
+        },
+        MuiAlert: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.shape.borderRadius * 1.25,
+                    alignItems: 'center',
+                }),
+            },
+        },
+        MuiLinearProgress: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    height: 8,
+                    borderRadius: 999,
+                    overflow: 'hidden',
+                    backgroundColor: alpha(theme.palette.text.primary, 0.08),
+                }),
+            },
+        },
+        MuiCheckbox: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    padding: theme.spacing(1),
+                    borderRadius: theme.shape.borderRadius / 2,
+                }),
+            },
+        },
+        MuiAppBar: {
+            styleOverrides: {
+                root: {
+                    backgroundImage: 'none',
+                },
             },
         },
         MuiLink: {

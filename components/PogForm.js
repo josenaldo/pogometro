@@ -4,7 +4,20 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { Alert, Box, Button, Checkbox, CircularProgress, FormControlLabel, Link as MuiLink, Stack, TextField, Typography } from '@mui/material'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  FormControlLabel,
+  InputAdornment,
+  LinearProgress,
+  Link as MuiLink,
+  Stack,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { IconHammer } from '@tabler/icons-react'
 
 const LOADING_MESSAGES = [
@@ -67,10 +80,10 @@ export default function PogForm() {
   }
 
   return (
-    <Stack component="form" onSubmit={handleSubmit} spacing={2.5}>
+    <Stack component="form" onSubmit={handleSubmit} spacing={2}>
       <TextField
         id="github-url"
-        label="URL do repositório ou perfil no GitHub"
+        label="URL do GitHub"
         type="url"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
@@ -80,28 +93,41 @@ export default function PogForm() {
         disabled={loading}
         autoComplete="off"
         inputProps={{ spellCheck: false, autoCapitalize: 'none', autoCorrect: 'off' }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <GitHubIcon fontSize="small" color="action" />
+            </InputAdornment>
+          ),
+        }}
       />
 
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={publico}
-            onChange={(e) => setPublico(e.target.checked)}
-            disabled={loading}
-            color="primary"
-          />
-        }
-        label={
-          <Typography variant="body2" color="text.secondary">
-            Aparecer no{' '}
-            <MuiLink component={Link} href="/mural" onClick={(e) => e.stopPropagation()} underline="hover">
-              Mural da Fama
-            </MuiLink>{' '}
-            com as grandes lendas POG
-          </Typography>
-        }
-        sx={{ alignItems: 'flex-start', m: 0 }}
-      />
+      <Stack spacing={0.5}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={publico}
+              onChange={(e) => setPublico(e.target.checked)}
+              disabled={loading}
+              color="primary"
+            />
+          }
+          label="Tornar resultado público"
+          sx={{ alignItems: 'center', m: 0 }}
+        />
+
+        <Typography variant="caption" color="text.secondary">
+          Se ativado, o resultado pode aparecer no{' '}
+          <MuiLink component={Link} href="/mural" underline="hover">
+            Mural da Fama
+          </MuiLink>{' '}
+          e no{' '}
+          <MuiLink component={Link} href="/ranking" underline="hover">
+            Ranking POG
+          </MuiLink>
+          .
+        </Typography>
+      </Stack>
 
       {erro ? (
         <Alert severity="error" variant="outlined">
@@ -121,15 +147,16 @@ export default function PogForm() {
         }
         sx={{ py: 1.6 }}
       >
-        {loading ? 'Certificando...' : 'Certificar meu projeto'}
+        {loading ? 'Certificando...' : url.trim() ? 'Certificar meu projeto' : 'Cole uma URL para começar'}
       </Button>
 
       {loading ? (
-        <Box>
+        <Stack spacing={1} role="status" aria-live="polite" aria-atomic="true">
+          <LinearProgress color="secondary" />
           <Typography variant="caption" color="text.secondary" textAlign="center" sx={{ display: 'block', fontStyle: 'italic' }}>
             {loadingMsg}
           </Typography>
-        </Box>
+        </Stack>
       ) : null}
     </Stack>
   )

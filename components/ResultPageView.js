@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-import { Box, Button, Chip, CircularProgress, Container, Paper, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, CardActions, CardContent, Chip, CircularProgress, Container, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import {
     IconBook,
@@ -15,9 +15,10 @@ import {
 } from '@tabler/icons-react'
 
 import NivelIcon from '@/components/NivelIcon'
+import { MAX_SCORE } from '@/lib/pog-catalog'
 import { getItemPalette, getItemTone, getLevelPalette, getLevelTone } from '@/lib/level-visuals'
 
-function ScoreRingCard({ score, max = 87, tone }) {
+function ScoreRingCard({ score, max = MAX_SCORE, tone }) {
     const percentage = Math.min((score / max) * 100, 100)
 
     return (
@@ -74,40 +75,41 @@ function BadgeItem({ item }) {
     const LabelIcon = labelConfig.Icon
 
     return (
-        <Paper
+        <Card
             variant="outlined"
             sx={{
-                p: 3,
-                borderRadius: 3,
                 borderColor: (theme) => getItemPalette(theme, item.tipo).border,
                 backgroundColor: (theme) => getItemPalette(theme, item.tipo).background,
             }}
         >
-            <Stack spacing={2}>
-                <Stack spacing={1}>
-                    <Chip
-                        size="small"
-                        icon={<LabelIcon size={14} stroke={2.2} />}
-                        label={`${labelConfig.label} · +${item.pontos} pts`}
-                        sx={{
-                            alignSelf: 'flex-start',
-                            color: (theme) => getItemPalette(theme, item.tipo).main,
-                            backgroundColor: (theme) => getItemPalette(theme, item.tipo).softBackground,
-                        }}
-                    />
-                    <Typography variant="h5">{item.nome}</Typography>
+            <CardContent sx={{ p: 3, '&:last-child': { pb: 2 } }}>
+                <Stack spacing={2}>
+                    <Stack spacing={1}>
+                        <Chip
+                            size="small"
+                            icon={<LabelIcon size={14} stroke={2.2} />}
+                            label={`${labelConfig.label} · +${item.pontos} pts`}
+                            sx={{
+                                alignSelf: 'flex-start',
+                                color: (theme) => getItemPalette(theme, item.tipo).main,
+                                backgroundColor: (theme) => getItemPalette(theme, item.tipo).softBackground,
+                            }}
+                        />
+                        <Typography variant="h5">{item.nome}</Typography>
+                    </Stack>
+
+                    {item.evidencias && item.evidencias.length > 0 ? (
+                        <Box component="ul" sx={{ m: 0, pl: 2.5, color: 'text.secondary' }}>
+                            {item.evidencias.map((ev, i) => (
+                                <Typography key={i} component="li" variant="body2" sx={{ mb: 0.75 }}>
+                                    {ev}
+                                </Typography>
+                            ))}
+                        </Box>
+                    ) : null}
                 </Stack>
-
-                {item.evidencias && item.evidencias.length > 0 ? (
-                    <Box component="ul" sx={{ m: 0, pl: 2.5, color: 'text.secondary' }}>
-                        {item.evidencias.map((ev, i) => (
-                            <Typography key={i} component="li" variant="body2" sx={{ mb: 0.75 }}>
-                                {ev}
-                            </Typography>
-                        ))}
-                    </Box>
-                ) : null}
-
+            </CardContent>
+            <CardActions sx={{ px: 3, pb: 3, pt: 0 }}>
                 <Button
                     component="a"
                     href={item.url}
@@ -115,12 +117,12 @@ function BadgeItem({ item }) {
                     rel="noopener noreferrer"
                     variant="text"
                     color={getItemTone(item.tipo)}
-                    sx={{ alignSelf: 'flex-start', px: 0 }}
+                    sx={{ px: 0 }}
                 >
                     Ver no livro
                 </Button>
-            </Stack>
-        </Paper>
+            </CardActions>
+        </Card>
     )
 }
 
@@ -170,12 +172,9 @@ export default function ResultPageView({ data, id, siteUrl }) {
     return (
         <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
             <Stack spacing={4}>
-                <Paper
+                <Card
                     variant="outlined"
                     sx={{
-                        p: { xs: 3, md: 5 },
-                        borderRadius: 5,
-                        textAlign: 'center',
                         borderColor: (theme) => getLevelPalette(theme, nivel).border,
                         background: (theme) => {
                             const colors = getLevelPalette(theme, nivel)
@@ -183,99 +182,112 @@ export default function ResultPageView({ data, id, siteUrl }) {
                         },
                     }}
                 >
-                    <Stack spacing={3} alignItems="center">
-                        <Box sx={{ color: (theme) => getLevelPalette(theme, nivel).main }}>
-                            <NivelIcon nivelId={nivel.id} size={52} />
-                        </Box>
+                    <CardContent sx={{ p: { xs: 3, md: 5 }, '&:last-child': { pb: { xs: 3, md: 5 } } }}>
+                        <Stack spacing={3} alignItems="center" textAlign="center">
+                            <Avatar
+                                sx={{
+                                    width: 72,
+                                    height: 72,
+                                    color: (theme) => getLevelPalette(theme, nivel).main,
+                                    backgroundColor: (theme) => getLevelPalette(theme, nivel).softBackground,
+                                }}
+                            >
+                                <NivelIcon nivelId={nivel.id} size={36} />
+                            </Avatar>
 
-                        <Stack spacing={1}>
-                            <Typography variant="overline" color="text.secondary">
-                                {data.tipo === 'profile' ? 'Perfil' : 'Repositório'} certificado
+                            <Stack spacing={1}>
+                                <Typography variant="overline" color="text.secondary">
+                                    {data.tipo === 'profile' ? 'Perfil' : 'Repositório'} certificado
+                                </Typography>
+                                <Typography variant="h2" sx={{ color: (theme) => getLevelPalette(theme, nivel).main }}>
+                                    &ldquo;{data.titulo_pog}&rdquo;
+                                </Typography>
+                                <Typography color="text.secondary">{data.nome_projeto}</Typography>
+                            </Stack>
+
+                            <ScoreRingCard score={data.score_total} tone={levelTone} />
+
+                            <Stack spacing={0.5}>
+                                <Typography variant="h4" sx={{ color: (theme) => getLevelPalette(theme, nivel).main }}>
+                                    {nivel.nome}
+                                </Typography>
+                                <Typography color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                                    {nivel.descricao}
+                                </Typography>
+                            </Stack>
+
+                            <Typography color="text.secondary" sx={{ maxWidth: 680, fontStyle: 'italic', lineHeight: 1.8 }}>
+                                &ldquo;{data.frase_abertura}&rdquo;
                             </Typography>
-                            <Typography variant="h2" sx={{ color: (theme) => getLevelPalette(theme, nivel).main }}>
-                                &ldquo;{data.titulo_pog}&rdquo;
-                            </Typography>
-                            <Typography color="text.secondary">{data.nome_projeto}</Typography>
+
+                            <Box
+                                sx={{
+                                    width: '100%',
+                                    display: 'grid',
+                                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' },
+                                    gap: 2,
+                                }}
+                            >
+                                {[
+                                    { label: 'Princípios', value: principios.length, tone: 'info' },
+                                    { label: 'Técnicas', value: tecnicas.length, tone: 'secondary' },
+                                    { label: 'GDPs', value: gdps.length, tone: 'warning' },
+                                ].map((item) => {
+                                    const itemType = item.tone === 'info' ? 'principio' : item.tone === 'secondary' ? 'tecnica' : 'gdp'
+
+                                    return (
+                                        <Card
+                                            key={item.label}
+                                            variant="outlined"
+                                            sx={{
+                                                borderColor: (theme) => getItemPalette(theme, itemType).border,
+                                                backgroundColor: (theme) => getItemPalette(theme, itemType).softBackground,
+                                            }}
+                                        >
+                                            <CardContent sx={{ p: 2.5, '&:last-child': { pb: 2.5 } }}>
+                                                <Typography variant="h4" sx={{ color: `${item.tone}.main` }}>
+                                                    {item.value}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {item.label}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    )
+                                })}
+                            </Box>
                         </Stack>
-
-                        <ScoreRingCard score={data.score_total} tone={levelTone} />
-
-                        <Stack spacing={0.5}>
-                            <Typography variant="h4" sx={{ color: (theme) => getLevelPalette(theme, nivel).main }}>
-                                {nivel.nome}
-                            </Typography>
-                            <Typography color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                                {nivel.descricao}
-                            </Typography>
-                        </Stack>
-
-                        <Typography color="text.secondary" sx={{ maxWidth: 680, fontStyle: 'italic', lineHeight: 1.8 }}>
-                            &ldquo;{data.frase_abertura}&rdquo;
-                        </Typography>
-
-                        <Box
-                            sx={{
-                                width: '100%',
-                                display: 'grid',
-                                gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' },
-                                gap: 2,
-                            }}
-                        >
-                            {[
-                                { label: 'Princípios', value: principios.length, tone: 'info' },
-                                { label: 'Técnicas', value: tecnicas.length, tone: 'secondary' },
-                                { label: 'GDPs', value: gdps.length, tone: 'warning' },
-                            ].map((item) => {
-                                const itemType = item.tone === 'info' ? 'principio' : item.tone === 'secondary' ? 'tecnica' : 'gdp'
-
-                                return (
-                                    <Paper
-                                        key={item.label}
-                                        variant="outlined"
-                                        sx={{
-                                            p: 2,
-                                            borderRadius: 3,
-                                            borderColor: (theme) => getItemPalette(theme, itemType).border,
-                                            backgroundColor: (theme) => getItemPalette(theme, itemType).softBackground,
-                                        }}
-                                    >
-                                        <Typography variant="h4" sx={{ color: `${item.tone}.main` }}>
-                                            {item.value}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {item.label}
-                                        </Typography>
-                                    </Paper>
-                                )
-                            })}
-                        </Box>
-                    </Stack>
-                </Paper>
+                    </CardContent>
+                </Card>
 
                 <DetectedSection title="Gambi Design Patterns Desbloqueados" items={gdps} tone="warning" Icon={IconBuilding} />
                 <DetectedSection title="Técnicas Dominadas" items={tecnicas} tone="secondary" Icon={IconTool} />
                 <DetectedSection title="Princípios Incorporados" items={principios} tone="info" Icon={IconHammer} />
 
                 {data.itens_detectados?.length === 0 ? (
-                    <Paper variant="outlined" sx={{ p: { xs: 4, md: 6 }, borderRadius: 4, textAlign: 'center' }}>
-                        <Stack spacing={2} alignItems="center">
-                            <Box sx={{ color: 'text.secondary' }}>
-                                <IconEgg size={42} stroke={2.2} aria-hidden="true" />
-                            </Box>
-                            <Typography variant="h4">Martelinho de Bebê</Typography>
-                            <Typography color="text.secondary">
-                                Seu código ainda não apresenta sinais visíveis de POG. Mas há broto de potencial ali.
-                            </Typography>
-                        </Stack>
-                    </Paper>
+                    <Card variant="outlined">
+                        <CardContent sx={{ p: { xs: 4, md: 6 }, '&:last-child': { pb: { xs: 4, md: 6 } } }}>
+                            <Stack spacing={2} alignItems="center" textAlign="center">
+                                <Avatar sx={{ width: 56, height: 56, bgcolor: 'action.hover', color: 'text.secondary' }}>
+                                    <IconEgg size={26} stroke={2.2} aria-hidden="true" />
+                                </Avatar>
+                                <Typography variant="h4">Martelinho de Bebê</Typography>
+                                <Typography color="text.secondary">
+                                    Seu código ainda não apresenta sinais visíveis de POG. Mas há broto de potencial ali.
+                                </Typography>
+                            </Stack>
+                        </CardContent>
+                    </Card>
                 ) : null}
 
                 {data.comentario_final ? (
-                    <Paper variant="outlined" sx={{ p: 3, borderRadius: 3, textAlign: 'center' }}>
-                        <Typography color="text.secondary" sx={{ fontStyle: 'italic', lineHeight: 1.8 }}>
-                            &ldquo;{data.comentario_final}&rdquo;
-                        </Typography>
-                    </Paper>
+                    <Card variant="outlined">
+                        <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
+                            <Typography color="text.secondary" sx={{ fontStyle: 'italic', lineHeight: 1.8, textAlign: 'center' }}>
+                                &ldquo;{data.comentario_final}&rdquo;
+                            </Typography>
+                        </CardContent>
+                    </Card>
                 ) : null}
 
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center">
@@ -312,39 +324,38 @@ export default function ResultPageView({ data, id, siteUrl }) {
                     </Button>
                 </Stack>
 
-                <Paper
+                <Card
                     variant="outlined"
                     sx={{
-                        p: { xs: 3, md: 4 },
-                        borderRadius: 4,
-                        textAlign: 'center',
                         borderColor: (theme) => getItemPalette(theme, 'gdp').border,
                         backgroundColor: (theme) => getItemPalette(theme, 'gdp').background,
                     }}
                 >
-                    <Stack spacing={2} alignItems="center">
-                        <Box sx={{ color: 'warning.main' }}>
-                            <IconBook size={28} stroke={2.2} aria-hidden="true" />
-                        </Box>
-                        <Typography variant="h4" sx={{ color: 'warning.main' }}>
-                            Conheça o livro que definiu esses critérios
-                        </Typography>
-                        <Typography color="text.secondary" sx={{ maxWidth: 620 }}>
-                            Quer entender cada princípio, técnica e Gambi Design Pattern detectado? O livro
-                            Programação Orientada a Gambiarra está esperando por você.
-                        </Typography>
-                        <Button
-                            component="a"
-                            href="https://livropog.com.br"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            variant="contained"
-                            color="secondary"
-                        >
-                            Acessar o livro POG
-                        </Button>
-                    </Stack>
-                </Paper>
+                    <CardContent sx={{ p: { xs: 3, md: 4 }, '&:last-child': { pb: { xs: 3, md: 4 } } }}>
+                        <Stack spacing={2} alignItems="center" textAlign="center">
+                            <Avatar sx={{ width: 56, height: 56, bgcolor: 'warning.light', color: 'warning.dark' }}>
+                                <IconBook size={26} stroke={2.2} aria-hidden="true" />
+                            </Avatar>
+                            <Typography variant="h4" sx={{ color: 'warning.main' }}>
+                                Conheça o livro que definiu esses critérios
+                            </Typography>
+                            <Typography color="text.secondary" sx={{ maxWidth: 620 }}>
+                                Quer entender cada princípio, técnica e Gambi Design Pattern detectado? O livro
+                                Programação Orientada a Gambiarra está esperando por você.
+                            </Typography>
+                            <Button
+                                component="a"
+                                href="https://livropog.com.br"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                variant="contained"
+                                color="secondary"
+                            >
+                                Acessar o livro POG
+                            </Button>
+                        </Stack>
+                    </CardContent>
+                </Card>
             </Stack>
         </Container>
     )

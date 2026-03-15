@@ -4,24 +4,27 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import LeaderboardIcon from '@mui/icons-material/Leaderboard'
-import { Box, Button, Chip, Container, Paper, Stack, Typography } from '@mui/material'
+import { Alert, Avatar, Box, Button, Card, CardActionArea, CardContent, Chip, Container, LinearProgress, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
-import { IconHammer, IconRobot, IconSearch, IconTrophy } from '@tabler/icons-react'
+import { IconRobot, IconSearch, IconTrophy } from '@tabler/icons-react'
 
 import NivelIcon from '@/components/NivelIcon'
 import PogForm from '@/components/PogForm'
+import { MAX_SCORE } from '@/lib/pog-catalog'
 import { getLevelPalette } from '@/lib/level-visuals'
 
+function getScorePercentage(score) {
+    return Math.max(0, Math.min(Math.round(((score || 0) / MAX_SCORE) * 100), 100))
+}
+
 function TopRankingCard({ item, position }) {
+    const scorePercentage = getScorePercentage(item.score_total)
+
     return (
-        <Paper
-            component={Link}
-            href={`/r/${item.id}`}
+        <Card
             variant="outlined"
             sx={{
-                p: 3,
-                borderRadius: 4,
-                textDecoration: 'none',
+                overflow: 'hidden',
                 borderColor: (theme) => getLevelPalette(theme, item.nivel).border,
                 background: (theme) => {
                     const colors = getLevelPalette(theme, item.nivel)
@@ -35,77 +38,96 @@ function TopRankingCard({ item, position }) {
                 },
             }}
         >
-            <Stack spacing={2.5}>
-                <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
-                    <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
-                        <Box
-                            sx={{
-                                width: 42,
-                                height: 42,
-                                borderRadius: '50%',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontWeight: 800,
-                                color: (theme) => getLevelPalette(theme, item.nivel).main,
-                                backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
-                                flexShrink: 0,
-                            }}
-                        >
-                            #{position}
-                        </Box>
-                        <Stack spacing={0.75} sx={{ minWidth: 0 }}>
-                            <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
-                                <Box sx={{ color: (theme) => getLevelPalette(theme, item.nivel).main, display: 'inline-flex' }}>
-                                    <NivelIcon nivelId={item.nivel?.id} size={18} />
-                                </Box>
-                                <Typography variant="h5" sx={{ minWidth: 0 }}>
-                                    {item.titulo_pog || item.nome}
+            <CardActionArea component={Link} href={`/r/${item.id}`} sx={{ display: 'block' }}>
+                <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                    <Box sx={{ p: 3 }}>
+                        <Stack spacing={2.5}>
+                            <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                                <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
+                                    <Avatar
+                                        sx={{
+                                            width: 42,
+                                            height: 42,
+                                            fontWeight: 800,
+                                            color: (theme) => getLevelPalette(theme, item.nivel).main,
+                                            backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
+                                            flexShrink: 0,
+                                        }}
+                                    >
+                                        #{position}
+                                    </Avatar>
+                                    <Stack spacing={0.75} sx={{ minWidth: 0 }}>
+                                        <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
+                                            <Box sx={{ color: (theme) => getLevelPalette(theme, item.nivel).main, display: 'inline-flex' }}>
+                                                <NivelIcon nivelId={item.nivel?.id} size={18} />
+                                            </Box>
+                                            <Typography variant="h5" sx={{ minWidth: 0 }}>
+                                                {item.titulo_pog || item.nome}
+                                            </Typography>
+                                        </Stack>
+                                        <Typography color="text.secondary">{item.nome}</Typography>
+                                    </Stack>
+                                </Stack>
+
+                                <Chip
+                                    label={`${item.score_total} pts`}
+                                    sx={{
+                                        fontWeight: 800,
+                                        color: (theme) => getLevelPalette(theme, item.nivel).main,
+                                        backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
+                                        flexShrink: 0,
+                                    }}
+                                />
+                            </Stack>
+
+                            {item.frase_abertura ? (
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{
+                                        fontStyle: 'italic',
+                                        lineHeight: 1.7,
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 3,
+                                        WebkitBoxOrient: 'vertical',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    &ldquo;{item.frase_abertura}&rdquo;
+                                </Typography>
+                            ) : null}
+
+                            <Stack direction="row" justifyContent="space-between" spacing={2}>
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        fontWeight: 700,
+                                        color: (theme) => getLevelPalette(theme, item.nivel).main,
+                                    }}
+                                >
+                                    {item.nivel?.nome}
+                                </Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                    {scorePercentage}% do caos teórico
                                 </Typography>
                             </Stack>
-                            <Typography color="text.secondary">{item.nome}</Typography>
                         </Stack>
-                    </Stack>
+                    </Box>
 
-                    <Chip
-                        label={`${item.score_total} pts`}
+                    <LinearProgress
+                        variant="determinate"
+                        value={scorePercentage}
                         sx={{
-                            fontWeight: 800,
-                            color: (theme) => getLevelPalette(theme, item.nivel).main,
-                            backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
-                            flexShrink: 0,
+                            height: 6,
+                            backgroundColor: (theme) => alpha(theme.palette.text.primary, 0.08),
+                            '& .MuiLinearProgress-bar': {
+                                backgroundColor: (theme) => getLevelPalette(theme, item.nivel).main,
+                            },
                         }}
                     />
-                </Stack>
-
-                {item.frase_abertura ? (
-                    <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{
-                            fontStyle: 'italic',
-                            lineHeight: 1.7,
-                            display: '-webkit-box',
-                            WebkitLineClamp: 3,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                        }}
-                    >
-                        &ldquo;{item.frase_abertura}&rdquo;
-                    </Typography>
-                ) : null}
-
-                <Typography
-                    variant="body2"
-                    sx={{
-                        fontWeight: 700,
-                        color: (theme) => getLevelPalette(theme, item.nivel).main,
-                    }}
-                >
-                    {item.nivel?.nome}
-                </Typography>
-            </Stack>
-        </Paper>
+                </CardContent>
+            </CardActionArea>
+        </Card>
     )
 }
 
@@ -253,143 +275,105 @@ export default function HomePageView({ topResultados = [], rankingError = false 
                     pb: { xs: 8, md: 10 },
                 }}
             >
-                <Paper
+                <Card
                     id="certificar"
-                    elevation={18}
+                    variant="outlined"
                     sx={{
-                        p: { xs: 3, md: 4 },
-                        borderRadius: 4,
-                        border: (theme) => `1px solid ${alpha(theme.palette.text.primary, 0.08)}`,
                         backgroundColor: (theme) =>
                             alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.92 : 0.96),
                         backdropFilter: 'blur(18px)',
                     }}
                 >
-                    <Stack spacing={2.5}>
-                        <Stack spacing={1} alignItems="center" textAlign="center">
-                            <Box
-                                sx={{
-                                    width: 56,
-                                    height: 56,
-                                    borderRadius: '50%',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.16),
-                                    color: 'primary.main',
-                                }}
-                            >
-                                <IconHammer size={28} stroke={2.2} aria-hidden="true" />
-                            </Box>
-                            <Typography variant="overline" color="text.secondary">
-                                Certificação instantânea
-                            </Typography>
-                            <Typography variant="h3">Cole a URL e invoque o Oráculo da Gambiarra</Typography>
-                            <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 620 }}>
-                                A interface agora segue a mesma família visual do livro, mas o objetivo continua o
-                                mesmo: medir a glória da sua gambiarra sem cerimônia.
-                            </Typography>
+                    <CardContent sx={{ p: { xs: 3, md: 4 }, '&:last-child': { pb: { xs: 3, md: 4 } } }}>
+                        <Stack spacing={3} sx={{ maxWidth: 720, mx: 'auto' }}>
+                            <Stack spacing={1} sx={{ maxWidth: 560 }}>
+                                <Typography variant="h3">Cole a URL do GitHub</Typography>
+                                <Typography color="text.secondary">
+                                    Analise um repositório ou perfil público e descubra o nível POG do seu código.
+                                </Typography>
+                            </Stack>
+
+                            <PogForm />
                         </Stack>
+                    </CardContent>
+                </Card>
 
-                        <PogForm />
-
-                        <Typography variant="caption" color="text.secondary" textAlign="center">
-                            Funciona com repositórios e perfis públicos.
-                        </Typography>
-                    </Stack>
-                </Paper>
-
-                <Paper
+                <Card
                     variant="outlined"
                     sx={{
                         mt: 4,
-                        p: { xs: 3, md: 4 },
-                        borderRadius: 4,
                         borderColor: (theme) => alpha(theme.palette.secondary.main, 0.24),
                         background: (theme) =>
                             `linear-gradient(135deg, ${alpha(theme.palette.secondary.main, theme.palette.mode === 'dark' ? 0.14 : 0.08)}, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.08 : 0.03)})`,
                     }}
                 >
-                    <Stack spacing={3}>
-                        <Stack
-                            direction={{ xs: 'column', md: 'row' }}
-                            spacing={2}
-                            justifyContent="space-between"
-                            alignItems={{ xs: 'flex-start', md: 'center' }}
-                        >
-                            <Stack spacing={1}>
-                                <Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'secondary.main' }}>
-                                    <LeaderboardIcon fontSize="small" />
-                                    <Typography variant="overline" color="inherit">
-                                        Ranking ao vivo
+                    <CardContent sx={{ p: { xs: 3, md: 4 }, '&:last-child': { pb: { xs: 3, md: 4 } } }}>
+                        <Stack spacing={3}>
+                            <Stack
+                                direction={{ xs: 'column', md: 'row' }}
+                                spacing={2}
+                                justifyContent="space-between"
+                                alignItems={{ xs: 'flex-start', md: 'center' }}
+                            >
+                                <Stack spacing={1}>
+                                    <Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'secondary.main' }}>
+                                        <LeaderboardIcon fontSize="small" />
+                                        <Typography variant="overline" color="inherit">
+                                            Ranking ao vivo
+                                        </Typography>
+                                    </Stack>
+                                    <Typography variant="h3">Top 3 da gambiarra certificada</Typography>
+                                    <Typography color="text.secondary" sx={{ maxWidth: 680 }}>
+                                        Uma prévia das maiores lendas públicas do momento. O ranking completo mostra o Top 10.
                                     </Typography>
                                 </Stack>
-                                <Typography variant="h3">Top 3 da gambiarra certificada</Typography>
-                                <Typography color="text.secondary" sx={{ maxWidth: 680 }}>
-                                    Uma prévia das maiores lendas públicas do momento. O ranking completo mostra o Top 10.
-                                </Typography>
+
+                                <Button
+                                    component={Link}
+                                    href="/ranking"
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<IconTrophy size={18} stroke={2.2} />}
+                                >
+                                    Ver Top 10
+                                </Button>
                             </Stack>
 
-                            <Button
-                                component={Link}
-                                href="/ranking"
-                                variant="contained"
-                                color="secondary"
-                                startIcon={<IconTrophy size={18} stroke={2.2} />}
-                            >
-                                Ver Top 10
-                            </Button>
+                            {rankingError ? (
+                                <Alert severity="warning" variant="outlined">
+                                    O ranking está indisponível no momento. Tente novamente em instantes.
+                                </Alert>
+                            ) : null}
+
+                            {!rankingError && topResultados.length === 0 ? (
+                                <Card variant="outlined">
+                                    <CardContent>
+                                        <Stack spacing={1.5} alignItems="center" textAlign="center">
+                                            <Typography variant="h5">O ranking ainda está vazio.</Typography>
+                                            <Typography color="text.secondary">
+                                                Certifique um projeto público e abra a disputa pelo topo da POG.
+                                            </Typography>
+                                        </Stack>
+                                    </CardContent>
+                                </Card>
+                            ) : null}
+
+                            {topResultados.length > 0 ? (
+                                <Box
+                                    sx={{
+                                        display: 'grid',
+                                        gridTemplateColumns: { xs: '1fr', lg: 'repeat(3, minmax(0, 1fr))' },
+                                        gap: 2,
+                                    }}
+                                >
+                                    {topResultados.map((item, index) => (
+                                        <TopRankingCard key={item.id} item={item} position={index + 1} />
+                                    ))}
+                                </Box>
+                            ) : null}
                         </Stack>
-
-                        {rankingError ? (
-                            <Paper
-                                variant="outlined"
-                                sx={{
-                                    p: 3,
-                                    borderRadius: 3,
-                                    borderStyle: 'dashed',
-                                    textAlign: 'center',
-                                    color: 'text.secondary',
-                                }}
-                            >
-                                <Typography>O ranking está indisponível no momento. Tente novamente em instantes.</Typography>
-                            </Paper>
-                        ) : null}
-
-                        {!rankingError && topResultados.length === 0 ? (
-                            <Paper
-                                variant="outlined"
-                                sx={{
-                                    p: 3,
-                                    borderRadius: 3,
-                                    textAlign: 'center',
-                                    borderColor: (theme) => alpha(theme.palette.text.primary, 0.08),
-                                }}
-                            >
-                                <Stack spacing={1.5} alignItems="center">
-                                    <Typography variant="h5">O ranking ainda está vazio.</Typography>
-                                    <Typography color="text.secondary">
-                                        Certifique um projeto público e abra a disputa pelo topo da POG.
-                                    </Typography>
-                                </Stack>
-                            </Paper>
-                        ) : null}
-
-                        {topResultados.length > 0 ? (
-                            <Box
-                                sx={{
-                                    display: 'grid',
-                                    gridTemplateColumns: { xs: '1fr', lg: 'repeat(3, minmax(0, 1fr))' },
-                                    gap: 2,
-                                }}
-                            >
-                                {topResultados.map((item, index) => (
-                                    <TopRankingCard key={item.id} item={item} position={index + 1} />
-                                ))}
-                            </Box>
-                        ) : null}
-                    </Stack>
-                </Paper>
+                    </CardContent>
+                </Card>
 
                 <Box
                     sx={{
@@ -416,37 +400,30 @@ export default function HomePageView({ topResultados = [], rankingError = false 
                             desc: 'De Martelinho de Bebê a Rompe Tormentas: cada item encontrado rende pontos e glória eterna.',
                         },
                     ].map(({ Icon, titulo, desc }) => (
-                        <Paper
+                        <Card
                             key={titulo}
                             variant="outlined"
-                            sx={{
-                                p: 3,
-                                borderRadius: 3,
-                                backgroundColor: (theme) => alpha(theme.palette.background.paper, 0.86),
-                                borderColor: (theme) => alpha(theme.palette.text.primary, 0.08),
-                            }}
+                            sx={{ backgroundColor: (theme) => alpha(theme.palette.background.paper, 0.86) }}
                         >
-                            <Stack spacing={1.5} alignItems="center" textAlign="center">
-                                <Box
-                                    sx={{
-                                        width: 160,
-                                        height: 160,
-                                        borderRadius: 2.5,
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        color: (theme) => theme.palette.mode === 'dark' ? 'common.white' : 'primary.main',
-                                        //backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.14),
-                                    }}
-                                >
-                                    <Icon size={130} stroke={2.2} aria-hidden="true" />
-                                </Box>
-                                <Typography variant="h5">{titulo}</Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {desc}
-                                </Typography>
-                            </Stack>
-                        </Paper>
+                            <CardContent sx={{ p: 3 }}>
+                                <Stack spacing={2} alignItems="flex-start" textAlign="left">
+                                    <Avatar
+                                        sx={{
+                                            width: 56,
+                                            height: 56,
+                                            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                                            color: 'primary.main',
+                                        }}
+                                    >
+                                        <Icon size={28} stroke={2.2} aria-hidden="true" />
+                                    </Avatar>
+                                    <Typography variant="h5">{titulo}</Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {desc}
+                                    </Typography>
+                                </Stack>
+                            </CardContent>
+                        </Card>
                     ))}
                 </Box>
             </Container>

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LeaderboardIcon from '@mui/icons-material/Leaderboard'
 import LightModeIcon from '@mui/icons-material/LightMode'
-import { AppBar, Box, Button, Container, IconButton, Stack, Toolbar, Tooltip } from '@mui/material'
+import { AppBar, Button, Container, IconButton, Paper, Stack, Toolbar, Tooltip } from '@mui/material'
 import { alpha, useTheme } from '@mui/material/styles'
 import { IconBook, IconTrophy } from '@tabler/icons-react'
 
@@ -38,39 +38,52 @@ export function SiteHeader() {
                     <BrandLogo />
 
                     <Stack direction="row" spacing={1} alignItems="center">
-                        <Button
-                            component={Link}
-                            href="/mural"
-                            color="inherit"
-                            startIcon={<IconTrophy size={16} stroke={2.2} />}
+                        <Paper
+                            variant="outlined"
                             sx={{
-                                color: 'text.secondary',
                                 display: { xs: 'none', sm: 'inline-flex' },
-                                '&:hover': {
-                                    color: 'text.primary',
-                                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                                },
+                                alignItems: 'center',
+                                gap: 0.5,
+                                p: 0.5,
+                                borderRadius: 999,
+                                backgroundColor: alpha(
+                                    theme.palette.background.paper,
+                                    theme.palette.mode === 'dark' ? 0.7 : 0.9
+                                ),
                             }}
                         >
-                            Mural da Fama
-                        </Button>
+                            <Button
+                                component={Link}
+                                href="/mural"
+                                color="inherit"
+                                startIcon={<IconTrophy size={16} stroke={2.2} />}
+                                sx={{
+                                    color: 'text.secondary',
+                                    '&:hover': {
+                                        color: 'text.primary',
+                                        backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                                    },
+                                }}
+                            >
+                                Mural da Fama
+                            </Button>
 
-                        <Button
-                            component={Link}
-                            href="/ranking"
-                            color="inherit"
-                            startIcon={<LeaderboardIcon fontSize="small" />}
-                            sx={{
-                                color: 'text.secondary',
-                                display: { xs: 'none', sm: 'inline-flex' },
-                                '&:hover': {
-                                    color: 'text.primary',
-                                    backgroundColor: alpha(theme.palette.secondary.main, 0.08),
-                                },
-                            }}
-                        >
-                            Ranking
-                        </Button>
+                            <Button
+                                component={Link}
+                                href="/ranking"
+                                color="inherit"
+                                startIcon={<LeaderboardIcon fontSize="small" />}
+                                sx={{
+                                    color: 'text.secondary',
+                                    '&:hover': {
+                                        color: 'text.primary',
+                                        backgroundColor: alpha(theme.palette.secondary.main, 0.08),
+                                    },
+                                }}
+                            >
+                                Ranking
+                            </Button>
+                        </Paper>
 
                         <Button
                             component="a"
@@ -91,7 +104,16 @@ export function SiteHeader() {
                             </IconButton>
                         </Tooltip>
 
-                        <Stack direction="row" spacing={0.5} sx={{ display: { xs: 'flex', sm: 'none' } }}>
+                        <Paper
+                            variant="outlined"
+                            sx={{
+                                display: { xs: 'inline-flex', sm: 'none' },
+                                alignItems: 'center',
+                                gap: 0.5,
+                                p: 0.5,
+                                borderRadius: 999,
+                            }}
+                        >
                             <Button
                                 component={Link}
                                 href="/mural"
@@ -116,7 +138,7 @@ export function SiteHeader() {
                             >
                                 Ranking
                             </Button>
-                        </Stack>
+                        </Paper>
                     </Stack>
                 </Toolbar>
             </Container>

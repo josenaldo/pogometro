@@ -43,6 +43,8 @@ export default function RootLayout({ children }) {
                             display: 'flex',
                             flexDirection: 'column',
                             backgroundColor: 'background.default',
+                            backgroundImage:
+                                'radial-gradient(circle at top, rgba(103, 58, 183, 0.1), transparent 32%), radial-gradient(circle at bottom right, rgba(139, 195, 74, 0.08), transparent 26%)',
                         }}
                     >
                         <SiteHeader />
