@@ -1,7 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+
+import { Alert, Box, Button, Checkbox, CircularProgress, FormControlLabel, Link as MuiLink, Stack, TextField, Typography } from '@mui/material'
 import { IconHammer } from '@tabler/icons-react'
 
 const LOADING_MESSAGES = [
@@ -64,79 +67,70 @@ export default function PogForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full">
-      {/* Input URL */}
-      <div>
-        <label htmlFor="github-url" className="block text-sm text-[var(--pog-text-secondary)] mb-2">
-          URL do repositório ou perfil no GitHub
-        </label>
-        <input
-          id="github-url"
-          type="url"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://github.com/usuario/repositorio"
-          required
-          disabled={loading}
-          className="w-full bg-[var(--pog-surface)] border border-[var(--pog-border)] rounded-lg px-4 py-3 text-[var(--pog-text-primary)] placeholder-[var(--pog-text-subtle)] focus:outline-none focus:border-[var(--pog-primary)] focus:ring-1 focus:ring-[var(--pog-primary)] disabled:opacity-50 transition-colors text-sm"
-        />
-      </div>
+    <Stack component="form" onSubmit={handleSubmit} spacing={2.5}>
+      <TextField
+        id="github-url"
+        label="URL do repositório ou perfil no GitHub"
+        type="url"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+        placeholder="https://github.com/usuario/repositorio"
+        required
+        fullWidth
+        disabled={loading}
+        autoComplete="off"
+        inputProps={{ spellCheck: false, autoCapitalize: 'none', autoCorrect: 'off' }}
+      />
 
-      {/* Opção de privacidade */}
-      <label className="flex items-center gap-3 cursor-pointer group">
-        <input
-          type="checkbox"
-          checked={publico}
-          onChange={(e) => setPublico(e.target.checked)}
-          disabled={loading}
-          className="w-4 h-4 accent-[var(--pog-primary)] cursor-pointer"
-        />
-        <span className="text-sm text-[var(--pog-text-secondary)] group-hover:text-[var(--pog-text-primary)] transition-colors">
-          Aparecer no{' '}
-          <a href="/mural" className="pog-link" onClick={(e) => e.stopPropagation()}>
-            Mural da Fama
-          </a>{' '}
-          com as grandes lendas POG
-        </span>
-      </label>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={publico}
+            onChange={(e) => setPublico(e.target.checked)}
+            disabled={loading}
+            color="primary"
+          />
+        }
+        label={
+          <Typography variant="body2" color="text.secondary">
+            Aparecer no{' '}
+            <MuiLink component={Link} href="/mural" onClick={(e) => e.stopPropagation()} underline="hover">
+              Mural da Fama
+            </MuiLink>{' '}
+            com as grandes lendas POG
+          </Typography>
+        }
+        sx={{ alignItems: 'flex-start', m: 0 }}
+      />
 
-      {/* Erro */}
-      {erro && (
-        <div className="rounded-lg px-4 py-3 text-sm border" style={{ backgroundColor: 'var(--pog-danger-bg)', borderColor: 'var(--pog-danger-border)', color: 'var(--pog-danger-text)' }}>
-          <span className="mr-2">⚠️</span>
+      {erro ? (
+        <Alert severity="error" variant="outlined">
           {erro}
-        </div>
-      )}
+        </Alert>
+      ) : null}
 
-      {/* Botão */}
-      <button
+      <Button
         type="submit"
+        variant="contained"
+        color="primary"
+        size="large"
+        fullWidth
         disabled={loading || !url.trim()}
-        className="w-full pog-btn-primary font-bold py-3 px-6 rounded-lg text-sm tracking-wide uppercase"
+        startIcon={
+          loading ? <CircularProgress size={18} color="inherit" /> : <IconHammer size={18} stroke={2.2} />
+        }
+        sx={{ py: 1.6 }}
       >
-        {loading ? (
-          <span className="flex items-center justify-center gap-2">
-            <span className="flex gap-1">
-              <span className="pog-loading-dot w-2 h-2 bg-white rounded-full inline-block" />
-              <span className="pog-loading-dot w-2 h-2 bg-white rounded-full inline-block" />
-              <span className="pog-loading-dot w-2 h-2 bg-white rounded-full inline-block" />
-            </span>
-            Certificando...
-          </span>
-        ) : (
-          <span className="flex items-center justify-center gap-2">
-            <IconHammer size={18} stroke={2.2} aria-hidden="true" />
-            <span>Certificar Meu Projeto</span>
-          </span>
-        )}
-      </button>
+        {loading ? 'Certificando...' : 'Certificar meu projeto'}
+      </Button>
 
-      {/* Mensagem de loading */}
-      {loading && (
-        <p className="text-center text-xs text-[var(--pog-text-muted)] italic animate-pulse">
-          {loadingMsg}
-        </p>
-      )}
-    </form>
+      {loading ? (
+        <Box>
+          <Typography variant="caption" color="text.secondary" textAlign="center" sx={{ display: 'block', fontStyle: 'italic' }}>
+            {loadingMsg}
+          </Typography>
+        </Box>
+      ) : null}
+    </Stack>
   )
 }
