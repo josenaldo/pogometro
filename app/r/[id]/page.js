@@ -1,6 +1,17 @@
+import Link from 'next/link'
+import {
+  IconBook,
+  IconBrandWhatsapp,
+  IconBrandX,
+  IconBuilding,
+  IconEgg,
+  IconHammer,
+  IconTool,
+} from '@tabler/icons-react'
 import { notFound } from 'next/navigation'
+
+import NivelIcon from '@/components/NivelIcon'
 import { getResult } from '@/lib/storage'
-import { ALL_ITEMS } from '@/lib/pog-catalog'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pogometro.com.br'
 
@@ -37,7 +48,7 @@ function ScoreRing({ score, max = 87 }) {
         <circle
           cx="50" cy="50" r={radius}
           fill="none"
-          stroke="#2d2d4e"
+          stroke="var(--pog-border)"
           strokeWidth="8"
         />
         <circle
@@ -52,36 +63,57 @@ function ScoreRing({ score, max = 87 }) {
         />
         <defs>
           <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#7c3aed" />
-            <stop offset="100%" stopColor="#fbbf24" />
+            <stop offset="0%" stopColor="var(--pog-primary)" />
+            <stop offset="100%" stopColor="var(--pog-secondary)" />
           </linearGradient>
         </defs>
       </svg>
       <div className="absolute text-center">
-        <div className="text-2xl font-bold text-white">{score}</div>
-        <div className="text-xs text-slate-500">pts</div>
+        <div className="text-2xl font-bold text-[var(--pog-text-primary)]">{score}</div>
+        <div className="text-xs text-[var(--pog-text-muted)]">pts</div>
       </div>
     </div>
   )
 }
 
 function BadgeItem({ item }) {
-  const corMap = {
-    principio: 'border-blue-700 bg-blue-950/40 text-blue-300',
-    tecnica: 'border-emerald-700 bg-emerald-950/40 text-emerald-300',
-    gdp: 'border-amber-700 bg-amber-950/40 text-amber-300',
-  }
-  const labelMap = {
-    principio: '📐 Princípio',
-    tecnica: '🔧 Técnica',
-    gdp: '🏗️ GDP',
+  const toneMap = {
+    principio: {
+      borderColor: 'var(--pog-info-strong)',
+      backgroundColor: 'var(--pog-info-bg)',
+      color: 'var(--pog-info)',
+    },
+    tecnica: {
+      borderColor: 'var(--pog-secondary-hover)',
+      backgroundColor: 'var(--pog-secondary-bg)',
+      color: 'var(--pog-secondary)',
+    },
+    gdp: {
+      borderColor: 'var(--pog-warning-strong)',
+      backgroundColor: 'var(--pog-warning-bg)',
+      color: 'var(--pog-warning)',
+    },
   }
 
+  const tone = toneMap[item.tipo] || toneMap.principio
+
+  const labelMap = {
+    principio: { label: 'Princípio', Icon: IconHammer },
+    tecnica: { label: 'Técnica', Icon: IconTool },
+    gdp: { label: 'GDP', Icon: IconBuilding },
+  }
+
+  const labelConfig = labelMap[item.tipo] || labelMap.principio
+  const LabelIcon = labelConfig.Icon
+
   return (
-    <div className={`border rounded-xl p-4 space-y-2 ${corMap[item.tipo]}`}>
+    <div className="border rounded-xl p-4 space-y-2" style={tone}>
       <div className="flex items-start justify-between gap-2">
         <div>
-          <span className="text-xs opacity-60">{labelMap[item.tipo]} · +{item.pontos} pts</span>
+          <span className="text-xs opacity-60 inline-flex items-center gap-1.5">
+            <LabelIcon size={14} stroke={2.2} aria-hidden="true" />
+            <span>{labelConfig.label} · +{item.pontos} pts</span>
+          </span>
           <h3 className="font-semibold text-sm leading-snug mt-0.5">{item.nome}</h3>
         </div>
       </div>
@@ -99,7 +131,7 @@ function BadgeItem({ item }) {
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block text-xs underline opacity-50 hover:opacity-80 transition-opacity mt-1"
+        className="inline-block text-xs pog-link mt-1"
       >
         Ver no livro →
       </a>
@@ -133,46 +165,48 @@ export default async function ResultPage({ params }) {
     <div className="max-w-4xl mx-auto px-4 py-12 space-y-10">
       {/* Cabeçalho do resultado */}
       <div
-        className={`rounded-2xl border p-8 text-center space-y-4 ${nivel.bgCor || 'bg-violet-950/30'} ${nivel.bordaCor || 'border-violet-700'}`}
+        className={`rounded-2xl border p-8 text-center space-y-4 ${nivel.bgCor || 'bg-[var(--pog-primary-bg)]'} ${nivel.bordaCor || 'border-[var(--pog-primary-strong)]'}`}
       >
-        <div className="text-5xl">{nivel.emoji}</div>
+        <div className="flex justify-center">
+          <NivelIcon nivelId={nivel.id} size={50} className={nivel.cor || 'text-[var(--pog-primary)]'} />
+        </div>
 
         <div>
-          <p className="text-xs text-slate-500 uppercase tracking-widest mb-1">
+          <p className="text-xs text-[var(--pog-text-muted)] uppercase tracking-widest mb-1">
             {data.tipo === 'profile' ? 'Perfil' : 'Repositório'} certificado
           </p>
-          <h1 className={`text-2xl sm:text-3xl font-bold ${nivel.cor || 'text-violet-300'}`}>
+          <h1 className={`text-2xl sm:text-3xl font-bold ${nivel.cor || 'text-[var(--pog-primary)]'}`}>
             &ldquo;{data.titulo_pog}&rdquo;
           </h1>
-          <p className="text-slate-400 text-sm mt-1">{data.nome_projeto}</p>
+          <p className="text-[var(--pog-text-secondary)] text-sm mt-1">{data.nome_projeto}</p>
         </div>
 
         <ScoreRing score={data.score_total} />
 
         <div>
-          <div className={`text-xl font-bold ${nivel.cor || 'text-violet-300'}`}>{nivel.nome}</div>
-          <div className="text-sm text-slate-400 italic">{nivel.descricao}</div>
+          <div className={`text-xl font-bold ${nivel.cor || 'text-[var(--pog-primary)]'}`}>{nivel.nome}</div>
+          <div className="text-sm text-[var(--pog-text-secondary)] italic">{nivel.descricao}</div>
         </div>
 
-        <p className="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed italic">
+        <p className="text-[var(--pog-text-secondary)] text-sm max-w-xl mx-auto leading-relaxed italic">
           &ldquo;{data.frase_abertura}&rdquo;
         </p>
 
         {/* Resumo de conquistas */}
         <div className="flex items-center justify-center gap-6 text-sm pt-2">
           <div className="text-center">
-            <div className="text-blue-400 font-bold text-lg">{principios.length}</div>
-            <div className="text-slate-500 text-xs">Princípios</div>
+            <div className="text-[var(--pog-info)] font-bold text-lg">{principios.length}</div>
+            <div className="text-[var(--pog-text-muted)] text-xs">Princípios</div>
           </div>
-          <div className="text-slate-700">|</div>
+          <div className="text-[var(--pog-text-subtle)]">|</div>
           <div className="text-center">
-            <div className="text-emerald-400 font-bold text-lg">{tecnicas.length}</div>
-            <div className="text-slate-500 text-xs">Técnicas</div>
+            <div className="text-[var(--pog-secondary)] font-bold text-lg">{tecnicas.length}</div>
+            <div className="text-[var(--pog-text-muted)] text-xs">Técnicas</div>
           </div>
-          <div className="text-slate-700">|</div>
+          <div className="text-[var(--pog-text-subtle)]">|</div>
           <div className="text-center">
-            <div className="text-amber-400 font-bold text-lg">{gdps.length}</div>
-            <div className="text-slate-500 text-xs">GDPs</div>
+            <div className="text-[var(--pog-warning)] font-bold text-lg">{gdps.length}</div>
+            <div className="text-[var(--pog-text-muted)] text-xs">GDPs</div>
           </div>
         </div>
       </div>
@@ -180,9 +214,10 @@ export default async function ResultPage({ params }) {
       {/* Gambi Design Patterns detectados */}
       {gdps.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-amber-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-            <span>🏗️</span> Gambi Design Patterns Desbloqueados
-            <span className="text-amber-600 font-normal normal-case tracking-normal">
+          <h2 className="text-sm font-semibold text-[var(--pog-warning)] uppercase tracking-widest mb-4 flex items-center gap-2">
+            <IconBuilding size={18} stroke={2.2} aria-hidden="true" />
+            <span>Gambi Design Patterns Desbloqueados</span>
+            <span className="text-[var(--pog-warning-strong)] font-normal normal-case tracking-normal">
               (+{gdps.reduce((s, i) => s + i.pontos, 0)} pts)
             </span>
           </h2>
@@ -197,9 +232,10 @@ export default async function ResultPage({ params }) {
       {/* Técnicas detectadas */}
       {tecnicas.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-emerald-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-            <span>🔧</span> Técnicas Dominadas
-            <span className="text-emerald-600 font-normal normal-case tracking-normal">
+          <h2 className="text-sm font-semibold text-[var(--pog-secondary)] uppercase tracking-widest mb-4 flex items-center gap-2">
+            <IconTool size={18} stroke={2.2} aria-hidden="true" />
+            <span>Técnicas Dominadas</span>
+            <span className="text-[var(--pog-secondary-hover)] font-normal normal-case tracking-normal">
               (+{tecnicas.reduce((s, i) => s + i.pontos, 0)} pts)
             </span>
           </h2>
@@ -214,9 +250,10 @@ export default async function ResultPage({ params }) {
       {/* Princípios detectados */}
       {principios.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-            <span>📐</span> Princípios Incorporados
-            <span className="text-blue-600 font-normal normal-case tracking-normal">
+          <h2 className="text-sm font-semibold text-[var(--pog-info)] uppercase tracking-widest mb-4 flex items-center gap-2">
+            <IconHammer size={18} stroke={2.2} aria-hidden="true" />
+            <span>Princípios Incorporados</span>
+            <span className="text-[var(--pog-info-strong)] font-normal normal-case tracking-normal">
               (+{principios.reduce((s, i) => s + i.pontos, 0)} pts)
             </span>
           </h2>
@@ -230,9 +267,11 @@ export default async function ResultPage({ params }) {
 
       {/* Nenhum item */}
       {data.itens_detectados?.length === 0 && (
-        <div className="text-center py-12 text-slate-500 space-y-2">
-          <div className="text-5xl">🥚</div>
-          <p className="text-lg font-semibold text-slate-400">Martelinho de Bebê</p>
+        <div className="text-center py-12 text-[var(--pog-text-muted)] space-y-2">
+          <div className="flex justify-center">
+            <IconEgg size={46} stroke={2.2} className="text-[var(--pog-text-secondary)]" aria-hidden="true" />
+          </div>
+          <p className="text-lg font-semibold text-[var(--pog-text-secondary)]">Martelinho de Bebê</p>
           <p className="text-sm">
             Seu código ainda não apresenta sinais visíveis de POG. Mas há broto de potencial
             ali!
@@ -242,8 +281,8 @@ export default async function ResultPage({ params }) {
 
       {/* Comentário final da IA */}
       {data.comentario_final && (
-        <div className="bg-[var(--pog-surface)] border border-[var(--pog-border)] rounded-xl p-5 text-center">
-          <p className="text-sm text-slate-400 italic leading-relaxed">
+        <div className="pog-card rounded-xl p-5 text-center">
+          <p className="text-sm text-[var(--pog-text-secondary)] italic leading-relaxed">
             &ldquo;{data.comentario_final}&rdquo;
           </p>
         </div>
@@ -255,39 +294,44 @@ export default async function ResultPage({ params }) {
           href={`https://twitter.com/intent/tweet?text=${shareText}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 sm:flex-none text-center bg-sky-800 hover:bg-sky-700 text-white text-sm font-medium py-3 px-6 rounded-xl transition-colors"
+          className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 text-center pog-btn-primary text-sm font-bold py-3 px-6 rounded-xl"
         >
-          🐦 Compartilhar no Twitter/X
+          <IconBrandX size={18} stroke={2.2} aria-hidden="true" />
+          <span>Compartilhar no Twitter/X</span>
         </a>
         <a
           href={`https://wa.me/?text=${shareText}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 sm:flex-none text-center bg-green-800 hover:bg-green-700 text-white text-sm font-medium py-3 px-6 rounded-xl transition-colors"
+          className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 text-center pog-btn-secondary text-sm font-bold py-3 px-6 rounded-xl"
         >
-          💬 Compartilhar no WhatsApp
+          <IconBrandWhatsapp size={18} stroke={2.2} aria-hidden="true" />
+          <span>Compartilhar no WhatsApp</span>
         </a>
-        <a
+        <Link
           href="/"
-          className="flex-1 sm:flex-none text-center bg-[var(--pog-surface)] hover:bg-[var(--pog-border)] text-slate-300 text-sm font-medium py-3 px-6 rounded-xl border border-[var(--pog-border)] transition-colors"
+          className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 text-center pog-btn-outline text-sm font-bold py-3 px-6 rounded-xl"
         >
-          ⚒️ Certificar outro projeto
-        </a>
+          <IconHammer size={18} stroke={2.2} aria-hidden="true" />
+          <span>Certificar outro projeto</span>
+        </Link>
       </div>
 
       {/* Promo do livro */}
-      <div className="bg-amber-950/30 border border-amber-800/50 rounded-2xl p-6 text-center space-y-3">
-        <div className="text-2xl">📖</div>
-        <h3 className="text-amber-400 font-semibold">Conheça o livro que definiu esses critérios</h3>
-        <p className="text-sm text-slate-400 max-w-md mx-auto">
+      <div className="bg-[var(--pog-warning-bg)] border border-[var(--pog-warning-strong)] rounded-2xl p-6 text-center space-y-3">
+        <div className="flex justify-center">
+          <IconBook size={28} stroke={2.2} className="text-[var(--pog-warning)]" aria-hidden="true" />
+        </div>
+        <h3 className="text-[var(--pog-warning)] font-semibold">Conheça o livro que definiu esses critérios</h3>
+        <p className="text-sm text-[var(--pog-text-secondary)] max-w-md mx-auto">
           Quer entender (e dominar) cada princípio, técnica e Gambi Design Pattern detectado? O
-          livro <span className="text-amber-300 font-semibold">Programação Orientada a Gambiarra</span> está esperando por você.
+          livro <span className="text-[var(--pog-warning)] font-semibold">Programação Orientada a Gambiarra</span> está esperando por você.
         </p>
         <a
           href="https://livropog.com.br"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-amber-600 hover:bg-amber-500 text-black font-bold text-sm py-3 px-8 rounded-xl transition-colors"
+          className="inline-block pog-btn-secondary font-bold text-sm py-3 px-8 rounded-xl"
         >
           Acessar o Livro POG →
         </a>

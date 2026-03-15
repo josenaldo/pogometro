@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { IconHammer } from '@tabler/icons-react'
 
 const LOADING_MESSAGES = [
   'Contando as variáveis de uma letra...',
@@ -66,7 +67,7 @@ export default function PogForm() {
     <form onSubmit={handleSubmit} className="space-y-4 w-full">
       {/* Input URL */}
       <div>
-        <label htmlFor="github-url" className="block text-sm text-slate-400 mb-2">
+        <label htmlFor="github-url" className="block text-sm text-[var(--pog-text-secondary)] mb-2">
           URL do repositório ou perfil no GitHub
         </label>
         <input
@@ -77,7 +78,7 @@ export default function PogForm() {
           placeholder="https://github.com/usuario/repositorio"
           required
           disabled={loading}
-          className="w-full bg-[var(--pog-surface)] border border-[var(--pog-border)] rounded-lg px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 disabled:opacity-50 transition-colors text-sm"
+          className="w-full bg-[var(--pog-surface)] border border-[var(--pog-border)] rounded-lg px-4 py-3 text-[var(--pog-text-primary)] placeholder-[var(--pog-text-subtle)] focus:outline-none focus:border-[var(--pog-primary)] focus:ring-1 focus:ring-[var(--pog-primary)] disabled:opacity-50 transition-colors text-sm"
         />
       </div>
 
@@ -88,11 +89,11 @@ export default function PogForm() {
           checked={publico}
           onChange={(e) => setPublico(e.target.checked)}
           disabled={loading}
-          className="w-4 h-4 accent-violet-500 cursor-pointer"
+          className="w-4 h-4 accent-[var(--pog-primary)] cursor-pointer"
         />
-        <span className="text-sm text-slate-400 group-hover:text-slate-300 transition-colors">
+        <span className="text-sm text-[var(--pog-text-secondary)] group-hover:text-[var(--pog-text-primary)] transition-colors">
           Aparecer no{' '}
-          <a href="/mural" className="text-violet-400 underline hover:text-violet-300" onClick={(e) => e.stopPropagation()}>
+          <a href="/mural" className="pog-link" onClick={(e) => e.stopPropagation()}>
             Mural da Fama
           </a>{' '}
           com as grandes lendas POG
@@ -101,7 +102,7 @@ export default function PogForm() {
 
       {/* Erro */}
       {erro && (
-        <div className="bg-red-950/50 border border-red-800 rounded-lg px-4 py-3 text-red-300 text-sm">
+        <div className="rounded-lg px-4 py-3 text-sm border" style={{ backgroundColor: 'var(--pog-danger-bg)', borderColor: 'var(--pog-danger-border)', color: 'var(--pog-danger-text)' }}>
           <span className="mr-2">⚠️</span>
           {erro}
         </div>
@@ -111,7 +112,7 @@ export default function PogForm() {
       <button
         type="submit"
         disabled={loading || !url.trim()}
-        className="w-full bg-violet-700 hover:bg-violet-600 disabled:bg-violet-900 disabled:opacity-50 text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm tracking-wide uppercase"
+        className="w-full pog-btn-primary font-bold py-3 px-6 rounded-lg text-sm tracking-wide uppercase"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -123,13 +124,16 @@ export default function PogForm() {
             Certificando...
           </span>
         ) : (
-          '⚒️ Certificar Meu Projeto'
+          <span className="flex items-center justify-center gap-2">
+            <IconHammer size={18} stroke={2.2} aria-hidden="true" />
+            <span>Certificar Meu Projeto</span>
+          </span>
         )}
       </button>
 
       {/* Mensagem de loading */}
       {loading && (
-        <p className="text-center text-xs text-slate-500 italic animate-pulse">
+        <p className="text-center text-xs text-[var(--pog-text-muted)] italic animate-pulse">
           {loadingMsg}
         </p>
       )}

@@ -462,6 +462,18 @@
   dependencies:
     tslib "^2.8.0"
 
+"@tabler/icons-react@^3.40.0":
+  version "3.40.0"
+  resolved "https://registry.npmjs.org/@tabler/icons-react/-/icons-react-3.40.0.tgz"
+  integrity sha512-oO5+6QCnna4a//mYubx4euZfECtzQZFDGsDMIdzZUhbdyBCT+3bRVFBPueGIcemWld4Vb/0UQ39C/cmGfGylAg==
+  dependencies:
+    "@tabler/icons" "3.40.0"
+
+"@tabler/icons@3.40.0":
+  version "3.40.0"
+  resolved "https://registry.npmjs.org/@tabler/icons/-/icons-3.40.0.tgz"
+  integrity sha512-V/Q4VgNPKubRTiLdmWjV/zscYcj5IIk+euicUtaVVqF6luSC9rDngYWgST5/yh3Mrg/mYUwRv1YVTk71Jp0twQ==
+
 "@tailwindcss/node@4.2.1":
   version "4.2.1"
   resolved "https://registry.npmjs.org/@tailwindcss/node/-/node-4.2.1.tgz"
@@ -2594,7 +2606,7 @@ react-is@^16.13.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-"react@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", react@^19.2.3, "react@>= 16.8.0 || 17.x.x || ^18.0.0-0 || ^19.0.0-0", react@19.2.3:
+"react@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", react@^19.2.3, "react@>= 16", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0 || ^19.0.0-0", react@19.2.3:
   version "19.2.3"
   resolved "https://registry.npmjs.org/react/-/react-19.2.3.tgz"
   integrity sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==
