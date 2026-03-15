@@ -1,5 +1,6 @@
 import './globals.css'
 import Link from 'next/link'
+import Script from 'next/script'
 import { IconBook, IconHammer } from '@tabler/icons-react'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pogometro.com.br'
@@ -89,6 +90,19 @@ export default function RootLayout({ children }) {
             </p>
           </div>
         </footer>
+
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-57YXT306JW"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-57YXT306JW');
+          `}
+        </Script>
       </body>
     </html>
   )
