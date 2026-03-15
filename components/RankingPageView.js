@@ -9,7 +9,7 @@ import { IconEgg, IconHammer, IconTrophy } from '@tabler/icons-react'
 
 import PublicResultsList from '@/components/PublicResultsList'
 
-export default function MuralPageView({ resultados, storageError }) {
+export default function RankingPageView({ resultados, storageError }) {
     return (
         <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
             <Stack spacing={4}>
@@ -19,9 +19,9 @@ export default function MuralPageView({ resultados, storageError }) {
                         p: { xs: 3, md: 4 },
                         borderRadius: 4,
                         textAlign: 'center',
-                        borderColor: (theme) => alpha(theme.palette.primary.main, 0.2),
+                        borderColor: (theme) => alpha(theme.palette.secondary.main, 0.24),
                         background: (theme) =>
-                            `linear-gradient(135deg, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.16 : 0.08)}, ${alpha(theme.palette.secondary.main, theme.palette.mode === 'dark' ? 0.12 : 0.05)})`,
+                            `linear-gradient(135deg, ${alpha(theme.palette.secondary.main, theme.palette.mode === 'dark' ? 0.18 : 0.1)}, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.1 : 0.04)})`,
                     }}
                 >
                     <Stack spacing={1.5} alignItems="center">
@@ -33,14 +33,14 @@ export default function MuralPageView({ resultados, storageError }) {
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                color: 'primary.main',
-                                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.16),
+                                color: 'secondary.main',
+                                backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.16),
                             }}
                         >
-                            <IconTrophy size={30} stroke={2.2} aria-hidden="true" />
+                            <LeaderboardIcon sx={{ fontSize: 30 }} aria-hidden="true" />
                         </Box>
                         <Typography variant="overline" color="text.secondary">
-                            Hall of fame oficial
+                            Top 10 oficial
                         </Typography>
                         <Typography
                             variant="h2"
@@ -51,11 +51,11 @@ export default function MuralPageView({ resultados, storageError }) {
                                 backgroundClip: 'text',
                             }}
                         >
-                            Mural da Fama
+                            Ranking POG
                         </Typography>
-                        <Typography color="text.secondary" sx={{ maxWidth: 620 }}>
-                            As grandes lendas POG do GitHub. Certificadas, validadas e eternizadas pelo Oráculo da
-                            Gambiarra.
+                        <Typography color="text.secondary" sx={{ maxWidth: 680 }}>
+                            As 10 maiores pontuações públicas já certificadas pelo Pogômetro. Em caso de empate,
+                            a gambiarra mais recente sobe na frente.
                         </Typography>
                     </Stack>
                 </Paper>
@@ -71,7 +71,7 @@ export default function MuralPageView({ resultados, storageError }) {
                             color: 'text.secondary',
                         }}
                     >
-                        <Typography>O Redis da Gambiarra está em manutenção. Tente novamente em instantes.</Typography>
+                        <Typography>O cofre do ranking está temporariamente indisponível. Tente novamente em instantes.</Typography>
                     </Paper>
                 ) : null}
 
@@ -81,9 +81,9 @@ export default function MuralPageView({ resultados, storageError }) {
                             <Box sx={{ color: 'text.secondary' }}>
                                 <IconEgg size={40} stroke={2.2} aria-hidden="true" />
                             </Box>
-                            <Typography variant="h4">O mural ainda está vazio.</Typography>
+                            <Typography variant="h4">O ranking ainda não foi inaugurado.</Typography>
                             <Typography color="text.secondary">
-                                Seja o primeiro a certificar seu projeto e entrar para a história da POG.
+                                Certifique alguns projetos públicos para começar a disputa pelo topo da POG.
                             </Typography>
                             <Button component={Link} href="/" variant="contained" color="primary" startIcon={<IconHammer size={18} stroke={2.2} />}>
                                 Certificar agora
@@ -92,19 +92,11 @@ export default function MuralPageView({ resultados, storageError }) {
                     </Paper>
                 ) : null}
 
-                {resultados.length > 0 ? (
-                    <PublicResultsList resultados={resultados} />
-                ) : null}
+                {resultados.length > 0 ? <PublicResultsList resultados={resultados} /> : null}
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-                    <Button
-                        component={Link}
-                        href="/ranking"
-                        variant="outlined"
-                        color="inherit"
-                        startIcon={<LeaderboardIcon fontSize="small" />}
-                    >
-                        Ver ranking
+                    <Button component={Link} href="/mural" variant="outlined" color="inherit" startIcon={<IconTrophy size={18} stroke={2.2} />}>
+                        Ver mural
                     </Button>
                     <Button component={Link} href="/" variant="contained" color="primary" startIcon={<IconHammer size={18} stroke={2.2} />}>
                         Certificar meu projeto

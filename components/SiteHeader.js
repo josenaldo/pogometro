@@ -3,6 +3,7 @@
 import Link from 'next/link'
 
 import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LeaderboardIcon from '@mui/icons-material/Leaderboard'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import { AppBar, Box, Button, Container, IconButton, Stack, Toolbar, Tooltip } from '@mui/material'
 import { alpha, useTheme } from '@mui/material/styles'
@@ -55,6 +56,23 @@ export function SiteHeader() {
                         </Button>
 
                         <Button
+                            component={Link}
+                            href="/ranking"
+                            color="inherit"
+                            startIcon={<LeaderboardIcon fontSize="small" />}
+                            sx={{
+                                color: 'text.secondary',
+                                display: { xs: 'none', sm: 'inline-flex' },
+                                '&:hover': {
+                                    color: 'text.primary',
+                                    backgroundColor: alpha(theme.palette.secondary.main, 0.08),
+                                },
+                            }}
+                        >
+                            Ranking
+                        </Button>
+
+                        <Button
                             component="a"
                             href="https://livropog.com.br"
                             target="_blank"
@@ -73,7 +91,7 @@ export function SiteHeader() {
                             </IconButton>
                         </Tooltip>
 
-                        <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                        <Stack direction="row" spacing={0.5} sx={{ display: { xs: 'flex', sm: 'none' } }}>
                             <Button
                                 component={Link}
                                 href="/mural"
@@ -81,12 +99,24 @@ export function SiteHeader() {
                                 sx={{
                                     minWidth: 0,
                                     color: 'text.secondary',
-                                    px: 1.5,
+                                    px: 1.25,
                                 }}
                             >
                                 Mural
                             </Button>
-                        </Box>
+                            <Button
+                                component={Link}
+                                href="/ranking"
+                                color="inherit"
+                                sx={{
+                                    minWidth: 0,
+                                    color: 'text.secondary',
+                                    px: 1.25,
+                                }}
+                            >
+                                Ranking
+                            </Button>
+                        </Stack>
                     </Stack>
                 </Toolbar>
             </Container>

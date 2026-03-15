@@ -1,14 +1,115 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 
-import { Box, Button, Container, Paper, Stack, Typography } from '@mui/material'
+import LeaderboardIcon from '@mui/icons-material/Leaderboard'
+import { Box, Button, Chip, Container, Paper, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { IconHammer, IconRobot, IconSearch, IconTrophy } from '@tabler/icons-react'
 
+import NivelIcon from '@/components/NivelIcon'
 import PogForm from '@/components/PogForm'
+import { getLevelPalette } from '@/lib/level-visuals'
 
-export default function HomePageView() {
+function TopRankingCard({ item, position }) {
+    return (
+        <Paper
+            component={Link}
+            href={`/r/${item.id}`}
+            variant="outlined"
+            sx={{
+                p: 3,
+                borderRadius: 4,
+                textDecoration: 'none',
+                borderColor: (theme) => getLevelPalette(theme, item.nivel).border,
+                background: (theme) => {
+                    const colors = getLevelPalette(theme, item.nivel)
+                    return `linear-gradient(180deg, ${colors.softBackground}, ${alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.94 : 0.98)})`
+                },
+                transition: 'transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease',
+                '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: (theme) => `0 20px 42px ${alpha(theme.palette.common.black, theme.palette.mode === 'dark' ? 0.28 : 0.1)}`,
+                    borderColor: (theme) => getLevelPalette(theme, item.nivel).main,
+                },
+            }}
+        >
+            <Stack spacing={2.5}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                    <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
+                        <Box
+                            sx={{
+                                width: 42,
+                                height: 42,
+                                borderRadius: '50%',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontWeight: 800,
+                                color: (theme) => getLevelPalette(theme, item.nivel).main,
+                                backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
+                                flexShrink: 0,
+                            }}
+                        >
+                            #{position}
+                        </Box>
+                        <Stack spacing={0.75} sx={{ minWidth: 0 }}>
+                            <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
+                                <Box sx={{ color: (theme) => getLevelPalette(theme, item.nivel).main, display: 'inline-flex' }}>
+                                    <NivelIcon nivelId={item.nivel?.id} size={18} />
+                                </Box>
+                                <Typography variant="h5" sx={{ minWidth: 0 }}>
+                                    {item.titulo_pog || item.nome}
+                                </Typography>
+                            </Stack>
+                            <Typography color="text.secondary">{item.nome}</Typography>
+                        </Stack>
+                    </Stack>
+
+                    <Chip
+                        label={`${item.score_total} pts`}
+                        sx={{
+                            fontWeight: 800,
+                            color: (theme) => getLevelPalette(theme, item.nivel).main,
+                            backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
+                            flexShrink: 0,
+                        }}
+                    />
+                </Stack>
+
+                {item.frase_abertura ? (
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                            fontStyle: 'italic',
+                            lineHeight: 1.7,
+                            display: '-webkit-box',
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                        }}
+                    >
+                        &ldquo;{item.frase_abertura}&rdquo;
+                    </Typography>
+                ) : null}
+
+                <Typography
+                    variant="body2"
+                    sx={{
+                        fontWeight: 700,
+                        color: (theme) => getLevelPalette(theme, item.nivel).main,
+                    }}
+                >
+                    {item.nivel?.nome}
+                </Typography>
+            </Stack>
+        </Paper>
+    )
+}
+
+export default function HomePageView({ topResultados = [], rankingError = false }) {
     return (
         <>
             <Box
@@ -198,6 +299,98 @@ export default function HomePageView() {
                     </Stack>
                 </Paper>
 
+                <Paper
+                    variant="outlined"
+                    sx={{
+                        mt: 4,
+                        p: { xs: 3, md: 4 },
+                        borderRadius: 4,
+                        borderColor: (theme) => alpha(theme.palette.secondary.main, 0.24),
+                        background: (theme) =>
+                            `linear-gradient(135deg, ${alpha(theme.palette.secondary.main, theme.palette.mode === 'dark' ? 0.14 : 0.08)}, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.08 : 0.03)})`,
+                    }}
+                >
+                    <Stack spacing={3}>
+                        <Stack
+                            direction={{ xs: 'column', md: 'row' }}
+                            spacing={2}
+                            justifyContent="space-between"
+                            alignItems={{ xs: 'flex-start', md: 'center' }}
+                        >
+                            <Stack spacing={1}>
+                                <Stack direction="row" spacing={1} alignItems="center" sx={{ color: 'secondary.main' }}>
+                                    <LeaderboardIcon fontSize="small" />
+                                    <Typography variant="overline" color="inherit">
+                                        Ranking ao vivo
+                                    </Typography>
+                                </Stack>
+                                <Typography variant="h3">Top 3 da gambiarra certificada</Typography>
+                                <Typography color="text.secondary" sx={{ maxWidth: 680 }}>
+                                    Uma prévia das maiores lendas públicas do momento. O ranking completo mostra o Top 10.
+                                </Typography>
+                            </Stack>
+
+                            <Button
+                                component={Link}
+                                href="/ranking"
+                                variant="contained"
+                                color="secondary"
+                                startIcon={<IconTrophy size={18} stroke={2.2} />}
+                            >
+                                Ver Top 10
+                            </Button>
+                        </Stack>
+
+                        {rankingError ? (
+                            <Paper
+                                variant="outlined"
+                                sx={{
+                                    p: 3,
+                                    borderRadius: 3,
+                                    borderStyle: 'dashed',
+                                    textAlign: 'center',
+                                    color: 'text.secondary',
+                                }}
+                            >
+                                <Typography>O ranking está indisponível no momento. Tente novamente em instantes.</Typography>
+                            </Paper>
+                        ) : null}
+
+                        {!rankingError && topResultados.length === 0 ? (
+                            <Paper
+                                variant="outlined"
+                                sx={{
+                                    p: 3,
+                                    borderRadius: 3,
+                                    textAlign: 'center',
+                                    borderColor: (theme) => alpha(theme.palette.text.primary, 0.08),
+                                }}
+                            >
+                                <Stack spacing={1.5} alignItems="center">
+                                    <Typography variant="h5">O ranking ainda está vazio.</Typography>
+                                    <Typography color="text.secondary">
+                                        Certifique um projeto público e abra a disputa pelo topo da POG.
+                                    </Typography>
+                                </Stack>
+                            </Paper>
+                        ) : null}
+
+                        {topResultados.length > 0 ? (
+                            <Box
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: { xs: '1fr', lg: 'repeat(3, minmax(0, 1fr))' },
+                                    gap: 2,
+                                }}
+                            >
+                                {topResultados.map((item, index) => (
+                                    <TopRankingCard key={item.id} item={item} position={index + 1} />
+                                ))}
+                            </Box>
+                        ) : null}
+                    </Stack>
+                </Paper>
+
                 <Box
                     sx={{
                         display: 'grid',
@@ -242,7 +435,7 @@ export default function HomePageView() {
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        color: 'white',
+                                        color: (theme) => theme.palette.mode === 'dark' ? 'common.white' : 'primary.main',
                                         //backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.14),
                                     }}
                                 >
