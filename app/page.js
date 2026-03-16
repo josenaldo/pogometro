@@ -1,6 +1,6 @@
 import HomePageView from '@/components/HomePageView'
 import { getTopResults } from '@/lib/storage'
-import { buildMetadata } from '@/lib/seo'
+import { buildMetadata, buildSoftwareApplicationJsonLd, serializeJsonLd } from '@/lib/seo'
 
 export const metadata = buildMetadata({
     description:
@@ -13,6 +13,7 @@ export const revalidate = 60
 export default async function Home() {
     let topResultados = []
     let rankingError = false
+    const softwareApplicationJsonLd = serializeJsonLd(buildSoftwareApplicationJsonLd())
 
     try {
         topResultados = await getTopResults(3)
@@ -20,5 +21,13 @@ export default async function Home() {
         rankingError = true
     }
 
-    return <HomePageView topResultados={topResultados} rankingError={rankingError} />
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: softwareApplicationJsonLd }}
+            />
+            <HomePageView topResultados={topResultados} rankingError={rankingError} />
+        </>
+    )
 }

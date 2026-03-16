@@ -5,8 +5,11 @@ import Script from 'next/script'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteHeader } from '@/components/SiteHeader'
 import {
+    buildWebSiteJsonLd,
     DEFAULT_OG_IMAGE,
+    serializeJsonLd,
     SITE_AUTHOR,
+    SITE_AUTHOR_URL,
     SITE_DESCRIPTION,
     SITE_KEYWORDS,
     SITE_NAME,
@@ -26,7 +29,7 @@ export const metadata = {
     },
     description: SITE_DESCRIPTION,
     applicationName: SITE_NAME,
-    authors: [{ name: SITE_AUTHOR, url: 'https://josenaldo.com' }],
+    authors: [{ name: SITE_AUTHOR, url: SITE_AUTHOR_URL }],
     creator: SITE_AUTHOR,
     publisher: SITE_NAME,
     keywords: SITE_KEYWORDS,
@@ -74,9 +77,15 @@ export const viewport = {
 }
 
 export default function RootLayout({ children }) {
+    const webSiteJsonLd = serializeJsonLd(buildWebSiteJsonLd())
+
     return (
         <html lang="pt-BR">
             <body suppressHydrationWarning>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: webSiteJsonLd }}
+                />
                 <Providers>
                     <Box
                         sx={{

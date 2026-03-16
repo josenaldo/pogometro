@@ -13,6 +13,13 @@ export async function generateMetadata({ params }) {
             title: 'Resultado não encontrado',
             description: 'O certificado POG solicitado não existe ou já expirou.',
             path: `/r/${id}`,
+            image: {
+                url: `/r/${id}/opengraph-image`,
+                width: 1200,
+                height: 630,
+                alt: 'Certificado POG não encontrado',
+                type: 'image/png',
+            },
             noIndex: true,
         })
     }
@@ -24,6 +31,13 @@ export async function generateMetadata({ params }) {
         title,
         description,
         path: `/r/${id}`,
+        image: {
+            url: `/r/${id}/opengraph-image`,
+            width: 1200,
+            height: 630,
+            alt: `${data.nome_projeto} no Pogômetro`,
+            type: 'image/png',
+        },
         noIndex: data.publico === false,
         keywords: [
             'resultado pogometro',
