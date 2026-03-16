@@ -6,7 +6,9 @@
         "dev": "next dev --port 3800",
         "build": "next build",
         "start": "next start --port 3800",
-        "lint": "eslint"
+        "lint": "eslint",
+        "calibrate:titles": "node scripts/calibrate-title-samples.mjs",
+        "refresh:public-titles": "node scripts/refresh-public-titles.mjs"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",

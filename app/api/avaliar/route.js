@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { parseGithubUrl, fetchRepoData, fetchProfileData } from '@/lib/github'
 import { evaluateRepo } from '@/lib/gemini'
-import { saveResult } from '@/lib/storage'
+import { getRecentPublicTitles, saveResult } from '@/lib/storage'
 import { ALL_ITEMS, getNivel } from '@/lib/pog-catalog'
 
 export const runtime = 'nodejs'
@@ -103,8 +103,16 @@ export async function POST(request) {
 
     // Avalia com Gemini
     let avaliacao
+    let recentTitles = []
+
     try {
-      avaliacao = await evaluateRepo(githubData)
+      recentTitles = await getRecentPublicTitles(24)
+    } catch {
+      recentTitles = []
+    }
+
+    try {
+      avaliacao = await evaluateRepo(githubData, { recentTitles })
     } catch (err) {
       console.error('Gemini error:', err)
       return Response.json(
