@@ -8,7 +8,8 @@
         "start": "next start --port 3800",
         "lint": "eslint",
         "calibrate:titles": "node scripts/calibrate-title-samples.mjs",
-        "refresh:public-titles": "node scripts/refresh-public-titles.mjs"
+        "refresh:public-titles": "node scripts/refresh-public-titles.mjs",
+        "reprocess:public-results": "node scripts/reprocess-public-results.mjs"
     },
     "dependencies": {
         "@emotion/react": "^11.14.0",
