@@ -260,9 +260,9 @@ export default function ResultPageView({ data, id, siteUrl }) {
                     </CardContent>
                 </Card>
 
-                <DetectedSection title="Gambi Design Patterns Desbloqueados" items={gdps} tone="warning" Icon={IconBuilding} />
-                <DetectedSection title="Técnicas Dominadas" items={tecnicas} tone="secondary" Icon={IconTool} />
                 <DetectedSection title="Princípios Incorporados" items={principios} tone="info" Icon={IconHammer} />
+                <DetectedSection title="Técnicas Dominadas" items={tecnicas} tone="secondary" Icon={IconTool} />
+                <DetectedSection title="Gambi Design Patterns Desbloqueados" items={gdps} tone="warning" Icon={IconBuilding} />
 
                 {data.itens_detectados?.length === 0 ? (
                     <Card variant="outlined">
