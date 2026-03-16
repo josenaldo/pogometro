@@ -35,7 +35,8 @@ Gerar UM título curto, memorável, engraçado e preciso, com forte cara de "Pro
 - Varie a estrutura. Não fique preso ao formato "O X de Y" e não recicle a mesma abertura o tempo todo.
 - Termos de profissão, ofício, arquétipo ou fantasia PODEM ser usados quando ajudarem a traduzir a evidência encontrada.
 - O problema é repetição, não a família em si. Se os títulos recentes já estiverem saturados em um mesmo arquétipo, escolha outro caminho.
-- Repertório permitido quando fizer sentido: arquiteto/arquiteta, arquimago/arquimaga, artífice, artesão/artesã, guardião/guardiã, tecnomante, codamante, mestre/mestra, sentinela, alquimista, chanceler.
+- Repertório permitido quando fizer sentido: arquiteto/arquiteta, arquimago/arquimaga, artífice, artesão/artesã, guardião/guardiã, tecnomante, codamante, mestre/mestra, sentinela, alquimista, chanceler, açougueiro/açougueira, marceneiro/marceneira, pedreiro/pedreira, mecânico/mecânica, eletricista, encanador/encanadora, serralheiro/serralheira, soldador/soldadora, funileiro/funileira, montador/montadora.
+- Profissões de oficina, obra, corte, solda e manutenção funcionam especialmente bem quando a gambiarra sugerir remendo, serragem, parafuso, sucata, solda fria, fita isolante, adaptação no braço ou montagem improvisada.
 - Se optar por arquétipo ou ofício, varie também a sintaxe. Quando os títulos recentes estiverem cheios de construções com "de/do/da", prefira formas como "em", "sob", "contra", ":" ou substantivo composto sem preposição.
 - Exemplos de direção estrutural: "Artífice em Estado de Hotfix", "Guardião contra Flags Fantasmas", "Bazar Runtime: Zips e Milagres", "Catacumbas de Comentários Herdados".
 - Evite repetir palavras de abertura ou construções muito parecidas com os títulos recentes.
@@ -52,6 +53,7 @@ Escolha implicitamente uma destas famílias, sem mencioná-la:
 - documento/registro: atlas, crônicas, inventário, manual, cartografia
 - caos operacional: orquestração improvisada, remendos, hardcodes, exceções, legado, terminal
 - persona/ofício fantástico: arquimago/arquimaga, artífice, artesão/artesã, guardião/guardiã, tecnomante, codamante, sentinela, alquimista, chanceler
+- ofício de oficina/obra: açougueiro/açougueira, marceneiro/marceneira, pedreiro/pedreira, mecânico/mecânica, eletricista, encanador/encanadora, serralheiro/serralheira, soldador/soldadora, funileiro/funileira, montador/montadora
 
 ## SAÍDA
 

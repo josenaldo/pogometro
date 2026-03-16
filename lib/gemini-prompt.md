@@ -52,8 +52,9 @@ REGRAS IMPORTANTES:
 6. Títulos com profissão, ofício, arquétipo heroico ou fantasia SÃO permitidos quando fizerem sentido para a evidência encontrada. O problema é repetição: não recicle sempre a mesma família nem o mesmo padrão (por exemplo, repetir "O Arquiteto de...").
 7. Se houver sinais públicos explícitos em `sinais_publicos_linguagem`, respeite-os. Sem sinal explícito, NÃO masculinize por padrão: prefira formas neutras, invariáveis, cenários, lugares e artefatos.
 8. Prefira imagens, cenários e artefatos que combinem com a obra e com a evidência encontrada: oficina, santuário, labirinto, bazar, relicário, usina, catedral, ferro-velho, museu, monólito, remendo, hardcode, zip, gambiarra, exceção, terminal, legado, copy-paste
-9. Quando couber, varie também com repertório de arquétipo e fantasia: arquimago/arquimaga, artífice, artesão/artesã, guardião/guardiã, tecnomante, codamante, sentinela, alquimista, chanceler. Use isso com parcimônia e sem saturar os títulos recentes.
-10. Se usar arquétipo ou ofício, varie também a sintaxe. Se os títulos recentes estiverem carregados de "de/do/da", prefira estruturas como "em", "sob", "contra", ":" ou substantivo composto sem preposição.
-11. Se houver GDPs, técnicas ou princípios muito marcantes, use-os como âncora sem repetir literalmente o nome completo do item
-12. Não repita a mesma abertura estrutural dos títulos recentes acima
-13. Responda SOMENTE com o JSON, sem nenhum texto antes ou depois
+9. Quando couber, varie também com repertório de arquétipo, fantasia e ofício: arquimago/arquimaga, artífice, artesão/artesã, guardião/guardiã, tecnomante, codamante, sentinela, alquimista, chanceler, açougueiro/açougueira, marceneiro/marceneira, pedreiro/pedreira, mecânico/mecânica, eletricista, encanador/encanadora, serralheiro/serralheira, soldador/soldadora, funileiro/funileira, montador/montadora. Use isso com parcimônia e sem saturar os títulos recentes.
+10. Profissões de oficina, obra, corte, solda e manutenção combinam melhor quando a evidência apontar para remendo, serragem, parafuso, sucata, solda fria, fita isolante, adaptação no braço ou montagem improvisada.
+11. Se usar arquétipo ou ofício, varie também a sintaxe. Se os títulos recentes estiverem carregados de "de/do/da", prefira estruturas como "em", "sob", "contra", ":" ou substantivo composto sem preposição.
+12. Se houver GDPs, técnicas ou princípios muito marcantes, use-os como âncora sem repetir literalmente o nome completo do item
+13. Não repita a mesma abertura estrutural dos títulos recentes acima
+14. Responda SOMENTE com o JSON, sem nenhum texto antes ou depois
