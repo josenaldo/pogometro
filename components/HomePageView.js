@@ -25,6 +25,9 @@ function TopRankingCard({ item, position }) {
             variant="outlined"
             sx={{
                 overflow: 'hidden',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
                 borderColor: (theme) => getLevelPalette(theme, item.nivel).border,
                 background: (theme) => {
                     const colors = getLevelPalette(theme, item.nivel)
@@ -38,10 +41,10 @@ function TopRankingCard({ item, position }) {
                 },
             }}
         >
-            <CardActionArea component={Link} href={`/r/${item.id}`} sx={{ display: 'block' }}>
-                <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-                    <Box sx={{ p: 3 }}>
-                        <Stack spacing={2}>
+            <CardActionArea component={Link} href={`/r/${item.id}`} sx={{ display: 'flex', flexDirection: 'column', flex: 1, alignItems: 'stretch' }}>
+                <CardContent sx={{ p: 0, '&:last-child': { pb: 0 }, display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <Box sx={{ p: 3, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <Stack spacing={2} sx={{ flex: 1 }}>
                             <Typography variant="h5">
                                 {item.titulo_pog || item.nome}
                             </Typography>
@@ -103,6 +106,8 @@ function TopRankingCard({ item, position }) {
                                     &ldquo;{item.frase_abertura}&rdquo;
                                 </Typography>
                             ) : null}
+
+                            <Box sx={{ flex: 1 }} />
 
                             <Stack direction="row" justifyContent="space-between" spacing={2}>
                                 <Typography variant="caption" color="text.secondary">
