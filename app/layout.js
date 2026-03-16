@@ -4,27 +4,68 @@ import Script from 'next/script'
 
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteHeader } from '@/components/SiteHeader'
+import {
+    DEFAULT_OG_IMAGE,
+    SITE_AUTHOR,
+    SITE_DESCRIPTION,
+    SITE_KEYWORDS,
+    SITE_NAME,
+    SITE_TITLE,
+    SITE_TITLE_TEMPLATE,
+    SITE_URL,
+    TWITTER_HANDLE,
+} from '@/lib/seo'
 
 import { Providers } from './providers'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pogometro.com.br'
-
 export const metadata = {
+    metadataBase: new URL(SITE_URL),
     title: {
-        default: 'Pogômetro — Certificação Oficial de Gambiarra',
-        template: '%s | Pogômetro',
+        default: SITE_TITLE,
+        template: SITE_TITLE_TEMPLATE,
     },
-    description:
-        'Analise o seu repositório GitHub e descubra quantos Princípios, Técnicas e Gambi Design Patterns do livro POG o seu projeto conquistou. Quanto mais gambiarra, maior a lenda!',
-    metadataBase: new URL(siteUrl),
+    description: SITE_DESCRIPTION,
+    applicationName: SITE_NAME,
+    authors: [{ name: SITE_AUTHOR, url: 'https://josenaldo.com' }],
+    creator: SITE_AUTHOR,
+    publisher: SITE_NAME,
+    keywords: SITE_KEYWORDS,
+    category: 'technology',
+    alternates: {
+        canonical: '/',
+    },
     openGraph: {
+        title: SITE_TITLE,
+        description: SITE_DESCRIPTION,
+        url: SITE_URL,
         siteName: 'Pogômetro',
         locale: 'pt_BR',
         type: 'website',
+        images: [DEFAULT_OG_IMAGE],
     },
     twitter: {
         card: 'summary_large_image',
-        creator: '@josenaldomatos',
+        creator: TWITTER_HANDLE,
+        title: SITE_TITLE,
+        description: SITE_DESCRIPTION,
+        images: [DEFAULT_OG_IMAGE.url],
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+            'max-video-preview': -1,
+        },
+    },
+    manifest: '/manifest.webmanifest',
+    icons: {
+        icon: [{ url: '/icons/favicon-48x48.png', sizes: '48x48', type: 'image/png' }],
+        shortcut: ['/icons/favicon-48x48.png'],
+        apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     },
 }
 
