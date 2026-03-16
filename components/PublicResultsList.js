@@ -63,19 +63,21 @@ export default function PublicResultsList({ resultados }) {
                         <CardActionArea component={Link} href={`/r/${item.id}`} sx={{ display: 'block' }}>
                             <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
                                 <Box sx={{ px: 3, pt: 3, pb: 2.25 }}>
-                                    <Box
-                                        sx={{
-                                            display: 'grid',
-                                            gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) auto' },
-                                            gap: 2.5,
-                                            alignItems: 'start',
-                                        }}
-                                    >
-                                        <Stack direction="row" spacing={2} alignItems="flex-start">
+                                    <Stack spacing={1.5}>
+                                        <Typography className="mural-title" variant="h5" sx={{ transition: 'color 160ms ease' }}>
+                                            {item.titulo_pog || displayName}
+                                        </Typography>
+
+                                        <Typography variant="body2" color="text.secondary">
+                                            {displayName}
+                                        </Typography>
+
+                                        <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
                                             <Avatar
                                                 sx={{
-                                                    width: 40,
-                                                    height: 40,
+                                                    width: 32,
+                                                    height: 32,
+                                                    fontSize: '0.8rem',
                                                     fontWeight: 800,
                                                     color: (theme) => getLevelPalette(theme, item.nivel).main,
                                                     backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
@@ -83,40 +85,9 @@ export default function PublicResultsList({ resultados }) {
                                             >
                                                 #{index + 1}
                                             </Avatar>
-
-                                            <Stack spacing={1.25} sx={{ minWidth: 0, flex: 1 }}>
-                                                <Stack direction="row" spacing={1.25} alignItems="center">
-                                                    <Box sx={{ color: (theme) => getLevelPalette(theme, item.nivel).main, display: 'inline-flex' }}>
-                                                        <NivelIcon nivelId={item.nivel?.id} size={20} />
-                                                    </Box>
-                                                    <Typography className="mural-title" variant="h5" sx={{ transition: 'color 160ms ease' }}>
-                                                        {item.titulo_pog || displayName}
-                                                    </Typography>
-                                                </Stack>
-
-                                                <Typography color="text.secondary">{displayName}</Typography>
-
-                                                {item.frase_abertura ? (
-                                                    <Typography
-                                                        variant="body2"
-                                                        color="text.secondary"
-                                                        sx={{
-                                                            fontStyle: 'italic',
-                                                            display: '-webkit-box',
-                                                            WebkitLineClamp: 2,
-                                                            WebkitBoxOrient: 'vertical',
-                                                            overflow: 'hidden',
-                                                        }}
-                                                    >
-                                                        &ldquo;{item.frase_abertura}&rdquo;
-                                                    </Typography>
-                                                ) : null}
-                                            </Stack>
-                                        </Stack>
-
-                                        <Stack spacing={1.25} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
                                             <Chip
                                                 label={`${item.score_total} pts`}
+                                                size="small"
                                                 sx={{
                                                     fontWeight: 800,
                                                     color: (theme) => getLevelPalette(theme, item.nivel).main,
@@ -125,7 +96,23 @@ export default function PublicResultsList({ resultados }) {
                                             />
                                             <NivelBadge nivel={item.nivel} />
                                         </Stack>
-                                    </Box>
+
+                                        {item.frase_abertura ? (
+                                            <Typography
+                                                variant="body2"
+                                                color="text.secondary"
+                                                sx={{
+                                                    fontStyle: 'italic',
+                                                    display: '-webkit-box',
+                                                    WebkitLineClamp: 2,
+                                                    WebkitBoxOrient: 'vertical',
+                                                    overflow: 'hidden',
+                                                }}
+                                            >
+                                                &ldquo;{item.frase_abertura}&rdquo;
+                                            </Typography>
+                                        ) : null}
+                                    </Stack>
 
                                     <Stack direction="row" justifyContent="space-between" spacing={2} sx={{ mt: 2.25 }}>
                                         <Typography variant="caption" color="text.secondary">

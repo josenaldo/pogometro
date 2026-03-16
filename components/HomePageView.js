@@ -41,43 +41,50 @@ function TopRankingCard({ item, position }) {
             <CardActionArea component={Link} href={`/r/${item.id}`} sx={{ display: 'block' }}>
                 <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
                     <Box sx={{ p: 3 }}>
-                        <Stack spacing={2.5}>
-                            <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
-                                <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
-                                    <Avatar
-                                        sx={{
-                                            width: 42,
-                                            height: 42,
-                                            fontWeight: 800,
-                                            color: (theme) => getLevelPalette(theme, item.nivel).main,
-                                            backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
-                                            flexShrink: 0,
-                                        }}
-                                    >
-                                        #{position}
-                                    </Avatar>
-                                    <Stack spacing={0.75} sx={{ minWidth: 0 }}>
-                                        <Stack direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
-                                            <Box sx={{ color: (theme) => getLevelPalette(theme, item.nivel).main, display: 'inline-flex' }}>
-                                                <NivelIcon nivelId={item.nivel?.id} size={18} />
-                                            </Box>
-                                            <Typography variant="h5" sx={{ minWidth: 0 }}>
-                                                {item.titulo_pog || item.nome}
-                                            </Typography>
-                                        </Stack>
-                                        <Typography color="text.secondary">{item.nome}</Typography>
-                                    </Stack>
-                                </Stack>
+                        <Stack spacing={2}>
+                            <Typography variant="h5">
+                                {item.titulo_pog || item.nome}
+                            </Typography>
 
+                            <Typography variant="body2" color="text.secondary">
+                                {item.nome}
+                            </Typography>
+
+                            <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
+                                <Avatar
+                                    sx={{
+                                        width: 32,
+                                        height: 32,
+                                        fontSize: '0.8rem',
+                                        fontWeight: 800,
+                                        color: (theme) => getLevelPalette(theme, item.nivel).main,
+                                        backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
+                                    }}
+                                >
+                                    #{position}
+                                </Avatar>
                                 <Chip
                                     label={`${item.score_total} pts`}
+                                    size="small"
                                     sx={{
                                         fontWeight: 800,
                                         color: (theme) => getLevelPalette(theme, item.nivel).main,
                                         backgroundColor: (theme) => getLevelPalette(theme, item.nivel).background,
-                                        flexShrink: 0,
                                     }}
                                 />
+                                <Box
+                                    sx={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 0.75,
+                                        color: (theme) => getLevelPalette(theme, item.nivel).main,
+                                    }}
+                                >
+                                    <NivelIcon nivelId={item.nivel?.id} size={16} />
+                                    <Typography variant="body2" sx={{ fontWeight: 700, color: 'inherit' }}>
+                                        {item.nivel?.nome}
+                                    </Typography>
+                                </Box>
                             </Stack>
 
                             {item.frase_abertura ? (
@@ -98,14 +105,8 @@ function TopRankingCard({ item, position }) {
                             ) : null}
 
                             <Stack direction="row" justifyContent="space-between" spacing={2}>
-                                <Typography
-                                    variant="body2"
-                                    sx={{
-                                        fontWeight: 700,
-                                        color: (theme) => getLevelPalette(theme, item.nivel).main,
-                                    }}
-                                >
-                                    {item.nivel?.nome}
+                                <Typography variant="caption" color="text.secondary">
+                                    Índice de gambiarra
                                 </Typography>
                                 <Typography variant="caption" color="text.secondary">
                                     {scorePercentage}% do caos teórico
