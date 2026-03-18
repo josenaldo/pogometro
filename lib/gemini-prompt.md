@@ -28,6 +28,16 @@ Seu trabalho é analisar os dados de um repositório/perfil GitHub e identificar
   1. princípios: documentação, organização, convenções, dependências, comentários, commits, ausência de testes ou CI, sinais de improviso estrutural
   2. técnicas: padrões operacionais recorrentes, versionamento artesanal, remendo incremental, ownership, monkey patching, tentativa e erro
   3. GDPs: anti-padrões concretos de código, arquitetura, duplicação, hardcode, exceções, flags, copy-paste e remendos locais
+
+### REGRA DE EXAUSTIVIDADE (CRÍTICA)
+
+- Você DEVE percorrer CADA UM dos 42 itens do catálogo e avaliar individualmente se há evidência nos dados. NÃO pare após encontrar 2 ou 3 itens por categoria.
+- A maioria dos repositórios reais apresenta entre 5 e 10 princípios, 2 a 4 técnicas e 4 a 10 GDPs. Se você encontrou menos de 4 princípios ou menos de 3 GDPs, RELEIA os dados e o catálogo antes de responder — provavelmente há itens que você pulou.
+- Para cada item do catálogo que você DESCARTOU, pergunte-se: "realmente não há nenhum sinal nos dados?" Principalmente para princípios de superfície como `documentacao-espartana`, `imperativo-funcional`, `simplicidade-indolente`, `foco-morcegativo` e `devaneio-entusiasmado`, que são detectáveis por ausência (falta de testes, falta de docs, falta de CI, etc.).
+- NÃO faça "amostragem" — a análise deve ser um checklist completo, item por item.
+
+### DIRETRIZES POR CATEGORIA
+
 - Técnicas e GDPs não são a mesma coisa: técnica é modo recorrente de operar; GDP é materialização concreta no código. Eles podem coexistir no mesmo projeto.
 - Use `heuristicas_repositorio.sinais_por_tecnica` como pista prioritária para a passada de técnicas.
 - Não converta automaticamente uma técnica em GDP só porque também existe código concreto com cheiro ruim. Exemplo: hotfixes sucessivos e comentários curativos sustentam `incremental-patching-debug`, mesmo que também exista um GDP no módulo afetado.
@@ -41,6 +51,14 @@ Seu trabalho é analisar os dados de um repositório/perfil GitHub e identificar
 Evite reciclar a mesma fórmula destes títulos recentes:
 
 {{RECENT_TITLES}}
+
+## PASSO DE VERIFICAÇÃO (OBRIGATÓRIO ANTES DE RESPONDER)
+
+Antes de montar o JSON final, faça mentalmente:
+1. Conte quantos itens você classificou em cada categoria. Se princípios < 4, técnicas < 2 ou GDPs < 3, volte ao catálogo e releia cada item descartado confrontando com os dados.
+2. Verifique especialmente os princípios baseados em ausência: `documentacao-espartana` (README fraco?), `imperativo-funcional` (sem testes?), `simplicidade-indolente` (sem linting/CI?), `foco-morcegativo` (TODOs acumulados?), `devaneio-entusiasmado` (sem tratamento de erros?), `criatividade-diversificativa` (convenções inconsistentes?). Esses são quase universais em projetos reais.
+3. Verifique GDPs muito comuns: `hardcoded-data`, `commented-code-forever`, `nonsense-flag-naming`, `mega-zord`, `ostrich-syndrome`. Se nenhum deles apareceu, reavalie.
+4. Só então monte o JSON.
 
 ## INSTRUÇÕES DE RESPOSTA
 
@@ -66,7 +84,7 @@ REGRAS IMPORTANTES:
 3. Se poucos itens forem encontrados, celebre o potencial e encoraje o desenvolvedor
 4. Os IDs devem ser EXATAMENTE os IDs listados no catálogo acima
 5. O "titulo_pog" DEVE ser altamente variado, específico e baseado nos itens detectados ou nos sinais concretos do repositório
-6. Antes de responder, verifique explicitamente se encontrou pelo menos uma evidência potencial em cada categoria: princípios, técnicas e GDPs. Só deixe uma categoria vazia se realmente não houver base suficiente nos dados.
+6. Antes de responder, verifique se percorreu TODOS os 42 itens do catálogo individualmente. Releia o catálogo e os dados uma segunda vez para confirmar que não pulou nenhum item detectável. Só deixe uma categoria com menos de 3 itens se realmente não houver base nos dados — a maioria dos repos tem 5+ princípios e 3+ GDPs.
 7. Para princípios, considere com força sinais de superfície e processo: README, estrutura do projeto, convenções, documentação, commits, ausência de automação e pistas em configuração.
 8. Para técnicas e GDPs, considere com força `heuristicas_repositorio`, `amostras_codigo`, caminhos suspeitos, nomes de arquivos e trechos de código.
 9. Para técnicas, priorize sinais operacionais: `sinais_por_tecnica`, padrões em commits/issues, nomes de backup/cópias, comentários de remendo, overrides em runtime e concentração autoral contextualizada.
